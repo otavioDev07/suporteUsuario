@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <script>
+
+        function obterNumeroDaURL() {
+            const urlParams = new URLSearchParams(window.location.search)
+            const cpf = urlParams.get('cpf')
+            return cpf
+        }
+        
+        window.onload = function() {
+            const cpf = obterNumeroDaURL()
+            if (cpf !== null) {
+                editarUsuario(parseInt(cpf))
+            } else {
+                alert('Parâmetro "CPF" não encontrado na URL.')
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <p id="message"></p>
+    <script>
+        window.onload = function() {
+            const MENSAGEM = document.getElementById('message')
+            MENSAGEM.innerText = `Bem-vindo`
+          };
+        </script>
+</body>
+</html>

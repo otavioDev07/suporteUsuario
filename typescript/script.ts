@@ -48,7 +48,7 @@ async function listarUsuarios():Promise<void> {
   // alterarStatus(id): Essa função é chamada quando o status de um usuário é alterado. Ela envia uma solicitação à API para atualizar o status do usuário com o ID fornecido.
   
   async function alterarStatus(id:any):Promise<void> {
-    const apiUrl = 'http://127.0.0.1/status/' + id
+    const apiUrl = 'http://10.142.227.72:80/status/' + id
     const response = await fetch(apiUrl)
     if (response.status == 201) {
       console.log('Status alterado!')
@@ -59,17 +59,20 @@ async function listarUsuarios():Promise<void> {
   // enviarDados(event): Esta função é chamada quando os dados de um novo usuário são enviados por meio de um formulário. Ela envia os dados para a API através de uma solicitação POST para cadastrar o novo usuário.
   
   async function enviarDados(event:any):Promise<boolean> {
+    alert("Chegamos aqui - chamou a fuçao")
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
-  
-    const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML 
-    const response:Response = await fetch('http://127.0.0.1/novo', {
+    alert("Chegamos aqui - preventDefault")
+    
+    const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
+    alert("Chegamos aqui - formData") 
+    const response:Response = await fetch('http://10.142.227.72:80/novo', {
       method: 'POST',
       body: formData
     })
   
     if (response.status == 201) {
       alert('Usuário cadastrado com sucesso!')
-      window.location.href = "gestao.html"
+      window.location.href = "home.html"
       return true
     } else if (response.status == 409) {
       alert('Usuário já tem cadastro!')
@@ -86,7 +89,7 @@ async function listarUsuarios():Promise<void> {
     const senha:any = document.getElementById('senha').value
     const user:any = document.getElementById('user').value
     const email:any = document.getElementById('email').value
-  
+
     // Verifica se a senha é forte
     if (senha.length < 8) {
       alert("A senha precisa ter, pelo menos, 8 dígitos!")
@@ -113,35 +116,29 @@ async function listarUsuarios():Promise<void> {
   }
   
   // verificarUsuario(): Essa função verifica se um usuário com o CPF fornecido está cadastrado no sistema. Ela faz uma solicitação à API para obter informações sobre o usuário e exibe uma mensagem dependendo do status do usuário (ativo ou bloqueado).
-  
+  let logado:boolean = false
+  let username:string = ""
   async function verificarUsuario():Promise<void> {
     try {
-      const cpf_usuario:any = document.getElementById('cpf').value.trim()
-      const resultado:any = document.getElementById('resultado')
-      const apiUrl:string = 'http://127.0.0.1/' + cpf_usuario
-      const response:Response = await fetch(apiUrl)
-  
+      const email_usuario:any = document.getElementById('email').value.trim()
+      const senha_usuario:any = document.getElementById('senha').value.trim()
+      const formData:FormData = new FormData(document.getElementById('formulario'))
+      const response:Response = await fetch('http://10.142.227.72:80/login', {
+      method: 'POST',
+      body: formData
+    })
       if (!response.ok) {
         alert('Usuário não encontrado!')
       }
       else {
         const data:Response = await response.json()
-  
-        const nome:any = data.nome
-        const ativo:any = data.ativo
-  
-        if (ativo) {
-          document.body.style.backgroundColor = "green"
-          resultado.textContent = "Olá  " + nome + "! Bons exercícios!"
-        }
-        else {
-          document.body.style.backgroundColor = "red"
-          resultado.textContent = nome + " seu acesso está BLOQUEADO! Procure a administração."
-        }
+        logado = true
+        username = data.user
+        
   
         setTimeout(() => {
-          location.reload() //Recarrega a página
-        }, 5000)
+            window.location.href = "home.html" //Recarrega a página
+        }, 2000)
       }
     }
     catch (error) {
@@ -152,7 +149,7 @@ async function listarUsuarios():Promise<void> {
   // editaUsuario(cpf): Esta função é chamada quando o usuário seleciona a opção de editar um usuário. Ela redireciona o usuário para uma página de edição com o CPF do usuário como parâmetro na URL.
   
   async function editaUsuario(cpf:any):Promise<void> {
-    const urlEditar:string = `edicao.html?cpf=${cpf}`
+    const urlEditar:string = `edicao.html?username=${username}+logado?=${logado}`
     window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
   }
   
@@ -189,7 +186,7 @@ async function listarUsuarios():Promise<void> {
     event.preventDefault() 
   
     const id:any = document.getElementById("id").value
-    const apiUrl:string = 'http://127.0.0.1/editar/' + id
+    const apiUrl:string = 'http://10.142.227.72:80/editar/' + id
     const formData:FormData = new FormData(document.getElementById('formulario'))
     const response:Response = await fetch(apiUrl, {
       method: 'PUT',
@@ -209,7 +206,7 @@ async function listarUsuarios():Promise<void> {
   // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
   async function excluir(id){
-    const apiUrl = 'http://127.0.0.1/deletar/' + id
+    const apiUrl = 'http://10.142.227.72:80/deletar/' + id
     const response = await fetch(apiUrl,{method:'DELETE'})
   
     if (response.status == 200) {

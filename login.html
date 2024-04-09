@@ -19,10 +19,10 @@
                 <label class="ms-2" for="email">E-mail:</label>
             </div>
             <div class="form-floating mb-3 col-12">
-                <input class="form-control" placeholder=""  type="senha" id="senha" name="senha" required>
+                <input class="form-control" placeholder=""  type="senha" id="senha" name="senha" required onblur="validaSenha()>
                 <label class="ms-2" for="senha">Senha:</label>
             </div>
-            <button id="logarbtn" type="button" class="btn btn-primary m-3" onclick="logar()">Cadastrar</button>
+            <button id="logarbtn" type="button" class="btn btn-primary m-3" onclick="verificarUsuario()">Entrar</button>
         </div> 
     </form>
     <p>Não possui uma conta? <a href="/cadastro.html">Cadastrar-se</a></p>
