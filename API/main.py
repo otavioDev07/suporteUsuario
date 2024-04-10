@@ -7,15 +7,32 @@ CORS(app)
 usuarios = [{
   "user":"Ádillan","email":"adillan.soares@gmail.com","senha":"#Adillan123"
 }]
+chamados = []
 
 # Rota para listar todos os usuários
 @app.route('/getall', methods=['GET'])
 def lista_usuarios():
     return jsonify(usuarios)
 
+# Rota para obter um usuário pelo email
+@app.route('/<email>', methods=['GET'])
+def get_usuarios(email):
+  for usuario in usuarios:
+    if usuario['email'] == email:
+      return jsonify(usuario)
+  return jsonify({"error": "Usuário não encontrado"}), 404
+
+# Rota para obter um usuário pelo email
+@app.route('/chamado/<email>', methods=['GET'])
+def get_chamado(email):
+  for chamado in chamados:
+    if chamado['email'] == email:
+      return jsonify(chamado)
+  return jsonify({"error": "Chamado não encontrado"}), 404
+
 # Rota para obter um usuário pelo código
 @app.route('/login', methods=['POST'])
-def get_usuarios():
+def get_login():
   email_usuario = request.form['email']
   senha_usuario = request.form['senha']
   for usuario in usuarios:
@@ -37,6 +54,43 @@ def add_usuario():
         novo_usuario = {"id": id, "email": email_usuario, "user": nome_usuario, "senha":senha_usuario}
         usuarios.append(novo_usuario)
         return jsonify({"message": "Usuário cadastrado"}), 201
+    
+# Rota para adicionar um novo chamado
+@app.route('/novochamado', methods=['POST'])
+def add_chamdo():
+    # Verifica se todos os campos necessários estão presentes no formulário
+    required_fields = ['user', 'email', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta']
+    for field in required_fields:
+        if field not in request.form:
+            return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
+
+    nome_chamado = request.form['user']
+    email_chamado = request.form['email']
+    dia_chamado = request.form['dia']
+    hora_chamado = request.form['hora']
+    setor_chamado = request.form['setor']
+    problema_chamado = request.form['problema']
+    detalhes_chamado = request.form['detalhes']
+    resposta_chamado = request.form['resposta']
+
+    for chamado in chamados:
+        if chamado['problema'] == problema_chamado and chamado['detalhes'] == detalhes_chamado and chamado['email'] == email_chamado:
+            return jsonify({'message': 'Chamado já foi registrado. Verificaremos o problema assim que possível.'}), 409
+
+    id = len(chamados) + 1
+    novo_chamado = {
+        "id": id,
+        "user": nome_chamado,
+        "email": email_chamado,
+        "dia": dia_chamado,
+        "hora": hora_chamado,
+        "setor": setor_chamado,
+        "problema": problema_chamado,
+        "detalhes": detalhes_chamado,
+        "resposta": resposta_chamado
+    }
+    chamados.append(novo_chamado)
+    return jsonify({"message": "Chamado registrado com sucesso.", "id": id}), 201
 
 # Rota para alterar status do usuário
 @app.route('/status/<int:id>')
