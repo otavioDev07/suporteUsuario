@@ -205,16 +205,16 @@ async function listarUsuarios():Promise<void> {
   
   // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
-  async function excluir(id){
-    const apiUrl = 'http://10.142.227.72:80/deletar/' + id
-    const response = await fetch(apiUrl,{method:'DELETE'})
+  // async function excluir(id){
+  //   const apiUrl = 'http://10.142.227.72:80/deletar/' + id
+  //   const response = await fetch(apiUrl,{method:'DELETE'})
   
-    if (response.status == 200) {
-      alert('Usuário deletado com sucesso!')
-      window.location.href = "gestao.html"
-      return true
-    } else {
-      alert('Falha ao excluir! Fale com o suporte')
-      return false
-    }
-  }
+  //   if (response.status == 200) {
+  //     alert('Usuário deletado com sucesso!')
+  //     window.location.href = "gestao.html"
+  //     return true
+  //   } else {
+  //     alert('Falha ao excluir! Fale com o suporte')
+  //     return false
+  //   }
+  // }
