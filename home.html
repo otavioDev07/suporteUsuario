@@ -19,7 +19,8 @@
         window.onload = () => {
             const infos = obterNumeroDaURL()
             if (infos) {
-                if (infos["logado"] == false){
+                if (infos["logado"] != "true"){
+                    alert(infos['logado'])
                     window.location.href = "login.html"
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])

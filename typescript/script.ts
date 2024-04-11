@@ -42,31 +42,32 @@ async function listarChamadosGestao():Promise<void> {
   
   // listarUsuariosUser(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
 
-  async function listarChamadosUser(email: string): Promise<void> {
-    const listaChamados:any = 'http://127.0.0.1:80/chamado/' + email;
-    const response:Response = await fetch(apiUrl);
-    if (!response.ok) {
-      listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>";
-    } else {
-      const data = await response.json();
+  // async function listarChamadosUser(email: string): Promise<void> {
+  //   const listaChamados:any = document.getElementById("listaChamados")
+  //   const apiUrl:string = 'http://127.0.0.1:80/chamado/' + email
+  //   const response:Response = await fetch(apiUrl);
+  //   if (!response.ok) {
+  //     listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>";
+  //   } else {
+  //     const data = await response.json();
   
-      // Clear listaChamados content before adding new cards
-      listaChamados.innerHTML = '';
+  //     // Clear listaChamados content before adding new cards
+  //     listaChamados.innerHTML = '';
   
-      for (let item of data) {
-        const card = createCard(item); // Create the card structure (see below)
-        listaChamados.appendChild(card); // Add the card to the listaChamados element
-      }
-    }
-  }
+  //     for (let item of data) {
+  //       const card = createCard(item); // Create the card structure (see below)
+  //       listaChamados.appendChild(card); // Add the card to the listaChamados element
+  //     }
+  //   }
+  // }
   
-  function createCard(item: any) {
-    `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>`
-    const cardResposta:any = document.getElementById("cardResposta")
-      if(item.resposta.trim() != ""){
-        cardResposta.innerHTML = `<hr><h5 class="card-title">Resposta</h5><p class="card-text">${item.resposta}</p>`
-      }
-  }
+  // function createCard(item: any) {
+  //   `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>`
+  //   const cardResposta:any = document.getElementById("cardResposta")
+  //     if(item.resposta.trim() != ""){
+  //       cardResposta.innerHTML = `<hr><h5 class="card-title">Resposta</h5><p class="card-text">${item.resposta}</p>`
+  //     }
+  // }
 
 async function listarChamadosUser(email:string):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
@@ -77,11 +78,13 @@ async function listarChamadosUser(email:string):Promise<void> {
   }
   else {
     const data:any = await response.json()
+    listaChamados.innerHTML = ""
     for (let item of data) {  
-      listaChamados.innerHTML = `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
+      alert("Dentro do for")
+      listaChamados.innerHTML += `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
       const cardResposta:any = document.getElementById("cardResposta")
       if(item.resposta.trim() != ""){
-        cardResposta.innerHTML = `
+        cardResposta.innerHTML += `
           <hr>
           <h5 class="card-title">Resposta</h5>
           <p class="card-text">${item.resposta}</p>
@@ -202,7 +205,7 @@ async function listarChamadosUser(email:string):Promise<void> {
   }
 
   //LiberarAdm(): função que torna o input Adm visível
-  function LiberarAdm(){
+  function liberarAdm(){
     const admCampo:any = document.getElementById("admCampo")
     admCampo.style.display = "block"
   }
@@ -323,7 +326,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     }
   }
   
-  excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
+  // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
   async function excluir(id){
     const apiUrl = 'http://127.0.0.1:80/deletar/' + id

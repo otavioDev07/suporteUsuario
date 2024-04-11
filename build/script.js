@@ -69,6 +69,29 @@ function listarChamadosGestao() {
     });
 }
 // listarUsuariosUser(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
+// async function listarChamadosUser(email: string): Promise<void> {
+//   const listaChamados:any = document.getElementById("listaChamados")
+//   const apiUrl:string = 'http://127.0.0.1:80/chamado/' + email
+//   const response:Response = await fetch(apiUrl);
+//   if (!response.ok) {
+//     listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>";
+//   } else {
+//     const data = await response.json();
+//     // Clear listaChamados content before adding new cards
+//     listaChamados.innerHTML = '';
+//     for (let item of data) {
+//       const card = createCard(item); // Create the card structure (see below)
+//       listaChamados.appendChild(card); // Add the card to the listaChamados element
+//     }
+//   }
+// }
+// function createCard(item: any) {
+//   `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>`
+//   const cardResposta:any = document.getElementById("cardResposta")
+//     if(item.resposta.trim() != ""){
+//       cardResposta.innerHTML = `<hr><h5 class="card-title">Resposta</h5><p class="card-text">${item.resposta}</p>`
+//     }
+// }
 function listarChamadosUser(email) {
     return __awaiter(this, void 0, void 0, function () {
         var listaChamados, apiUrl, response, data, _i, data_2, item, cardResposta;
@@ -86,13 +109,14 @@ function listarChamadosUser(email) {
                 case 2: return [4 /*yield*/, response.json()];
                 case 3:
                     data = _a.sent();
+                    listaChamados.innerHTML = "";
                     for (_i = 0, data_2 = data; _i < data_2.length; _i++) {
                         item = data_2[_i];
-                        alert("Está verificando os items");
-                        listaChamados.innerHTML = "<div class=\"card col-12 col-lg-4\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.data, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado
+                        alert("Dentro do for");
+                        listaChamados.innerHTML += "<div class=\"card col-12 col-lg-4\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.data, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado
                         cardResposta = document.getElementById("cardResposta");
                         if (item.resposta.trim() != "") {
-                            cardResposta.innerHTML = "\n          <hr>\n          <h5 class=\"card-title\">Resposta</h5>\n          <p class=\"card-text\">".concat(item.resposta, "</p>\n        ");
+                            cardResposta.innerHTML += "\n          <hr>\n          <h5 class=\"card-title\">Resposta</h5>\n          <p class=\"card-text\">".concat(item.resposta, "</p>\n        ");
                         }
                     }
                     _a.label = 4;
@@ -239,7 +263,7 @@ function validaAdm() {
     }
 }
 //LiberarAdm(): função que torna o input Adm visível
-function LiberarAdm() {
+function liberarAdm() {
     var admCampo = document.getElementById("admCampo");
     admCampo.style.display = "block";
 }
@@ -403,18 +427,30 @@ function alterarDados(event) {
     });
 }
 // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
-// async function excluir(id){
-//   const apiUrl = 'http://127.0.0.1:80/deletar/' + id
-//   const response = await fetch(apiUrl,{method:'DELETE'})
-//   if (response.status == 200) {
-//     alert('Usuário deletado com sucesso!')
-//     window.location.href = "gestao.html"
-//     return true
-//   } else {
-//     alert('Falha ao excluir! Fale com o suporte')
-//     return false
-//   }
-// }
+function excluir(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var apiUrl, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    apiUrl = 'http://127.0.0.1:80/deletar/' + id;
+                    return [4 /*yield*/, fetch(apiUrl, { method: 'DELETE' })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status == 200) {
+                        alert('Usuário deletado com sucesso!');
+                        window.location.href = "gestao.html";
+                        return [2 /*return*/, true];
+                    }
+                    else {
+                        alert('Falha ao excluir! Fale com o suporte');
+                        return [2 /*return*/, false];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 /*
 async function listarChamadosGestao():Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
