@@ -25,10 +25,11 @@ def get_usuarios(email):
 # Rota para obter um usuário pelo email
 @app.route('/chamado/<email>', methods=['GET'])
 def get_chamado(email):
-  for chamado in chamados:
-    if chamado['email'] == email:
-      return jsonify(chamado)
-  return jsonify({"error": "Chamado não encontrado"}), 404
+  chamados_cliente = [chamado for chamado in chamados if chamado['email'] == email]
+  if chamados_cliente:
+      return jsonify(chamados_cliente)
+  else:
+      return jsonify({"error": "Nenhum chamado encontrado para este cliente"}), 404
 
 # Rota para obter um usuário pelo código
 @app.route('/login', methods=['POST'])
