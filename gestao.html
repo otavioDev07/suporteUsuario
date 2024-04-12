@@ -25,7 +25,7 @@
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])
                     listarChamadosGestao()
-                    document.getElementById("adm").value = "True"
+                    document.getElementById("status").value = "Em Aberto"
                     document.getElementById("resposta").value = ""
                 }
             } else {
@@ -59,8 +59,8 @@
                         <label class="ms-2" for="user">Resposta:</label>
                     </div>
                     <div class="form-floating mb-3 col-12 d-none">
-                        <input class="form-control" placeholder=""  type="text" id="adm" name="adm">
-                        <label class="ms-2" for="user">Registrado por administrador?</label>
+                        <input class="form-control" placeholder=""  type="text" id="status" name="status">
+                        <label class="ms-2" for="user">Status</label>
                     </div>
                     <div class="form-floating mb-3 col-12">
                         <input class="form-control" placeholder=""  type="text" id="user" name="user">
