@@ -80,8 +80,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     const data:any = await response.json()
     listaChamados.innerHTML = ""
     for (let item of data) {  
-      alert("Dentro do for")
-      listaChamados.innerHTML += `<div class="card col-12 col-lg-4"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
+      listaChamados.innerHTML += `<div class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
       const cardResposta:any = document.getElementById("cardResposta")
       if(item.resposta.trim() != ""){
         cardResposta.innerHTML += `
@@ -122,6 +121,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
     const user:any = document.getElementById("user")
     const email:any = document.getElementById("email")
+    const telefone:any = document.getElementById("telefone")
     const dia:any = document.getElementById("dia")
     const hora:any = document.getElementById("hora")
     const resposta:any = document.getElementById("resposta")
@@ -133,7 +133,9 @@ async function listarChamadosUser(email:string):Promise<void> {
     else {
       const data:any = await Getresponse.json()
       const username:any = data.user
+      const userphone:any = data.telefone
       user.value = username
+      telefone.value = userphone
     }
     resposta.value = ""
     const date = new Date()

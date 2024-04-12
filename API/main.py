@@ -5,7 +5,7 @@ app = Flask(__name__)
 CORS(app)
 
 usuarios = [{
-  "user":"Ádillan","email":"adillan.soares@gmail.com","senha":"#Adillan123"
+  "user":"Ádillan","email":"adillan.soares@gmail.com","telefone":"15997357821","senha":"#Adillan123"
 }]
 chamados = []
 
@@ -46,13 +46,14 @@ def get_login():
 def add_usuario():
   nome_usuario = request.form['user']
   email_usuario = request.form['email']
+  telefone_usuario = request.form['telefone']
   senha_usuario = request.form['senha']
   for usuario in usuarios:
     if usuario['email'] == email_usuario:
       return jsonify({"message": "Usuário já tem cadastro!"}), 409
     else:
         id = len(usuarios) + 1
-        novo_usuario = {"id": id, "email": email_usuario, "user": nome_usuario, "senha":senha_usuario}
+        novo_usuario = {"id": id, "email": email_usuario, "user": nome_usuario, "telefone": telefone_usuario, "senha":senha_usuario}
         usuarios.append(novo_usuario)
         return jsonify({"message": "Usuário cadastrado"}), 201
     
@@ -60,13 +61,14 @@ def add_usuario():
 @app.route('/novochamado', methods=['POST'])
 def add_chamdo():
     # Verifica se todos os campos necessários estão presentes no formulário
-    required_fields = ['user', 'email', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta']
+    required_fields = ['user', 'email', 'telefone', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta']
     for field in required_fields:
         if field not in request.form:
             return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
 
     nome_chamado = request.form['user']
     email_chamado = request.form['email']
+    telefone_chamado = request.form['telefone']
     dia_chamado = request.form['dia']
     hora_chamado = request.form['hora']
     setor_chamado = request.form['setor']
@@ -83,6 +85,7 @@ def add_chamdo():
         "id": id,
         "user": nome_chamado,
         "email": email_chamado,
+        "telefone": telefone_chamado,
         "dia": dia_chamado,
         "hora": hora_chamado,
         "setor": setor_chamado,
