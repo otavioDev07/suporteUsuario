@@ -3,42 +3,30 @@ let loginEmail:string = ""
 // listarUsuariosGestao(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
 
 async function listarChamadosGestao():Promise<void> {
-    const listaChamados:any = document.getElementById("listaChamados")
-    const apiUrl:string = 'http://127.0.0.1/getall'
-    const response:Response = await fetch(apiUrl)
-  
-    if (!response.ok) {
-      listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>"
-    }
-    else {
-      const data:any = await response.json()
-      for (const item of data) {
-        listaChamados.innerHTML = `
-        <div class="card col-12 col-lg-4">
-        <div class="card-body">
-          <h5 id="cardProblema" class="card-title">${item.problema}</h5>
-          <div class="d-flex justify-content-between">
-            <h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.problema}</h6>
-            <h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6>
-            <h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6>
-            <h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.data} - ${item.hora}</h6>
-          </div>
-          <p class="card-text">${item.detalhes}</p>
-          <div id="cardResposta"></div>
-        </div>
-      </div>
-        ` //adiciona card com informações do chamado
-        const cardResposta:any = document.getElementById("cardResposta")
-        if(item.resposta){
-          cardResposta.innerHTML = `
-            <hr>
-            <h5 class="card-title">Resposta</h5>
-            <p class="card-text">${item.resposta}</p>
-          `
-        }
+  const listaChamados:any = document.getElementById("listaChamados")
+  const apiUrl:string = 'http://127.0.0.1:80/chamado/getall'
+  const response:Response = await fetch(apiUrl)
+  if (!response.ok) {
+    listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>"
+  }
+  else {
+    const data:any = await response.json()
+    listaChamados.innerHTML = ""
+    for (let item of data) {  
+      alert(item.user)
+      alert(item.telefone)
+      listaChamados.innerHTML += `<div class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
+      const cardResposta:any = document.getElementById("cardResposta")
+      if(item.resposta.trim() != ""){
+        cardResposta.innerHTML += `
+          <hr>
+          <h5 class="card-title">Resposta</h5>
+          <p class="card-text">${item.resposta}</p>
+        `
       }
     }
   }
+}
   
   // listarUsuariosUser(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
 
@@ -81,7 +69,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     listaChamados.innerHTML = ""
     for (let item of data) {  
       listaChamados.innerHTML += `<div class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
-      const cardResposta:any = document.getElementById("cardResposta")
+      const cardResposta:any = document.getElemerrntById("cardResposta")
       if(item.resposta.trim() != ""){
         cardResposta.innerHTML += `
           <hr>
@@ -124,7 +112,6 @@ async function listarChamadosUser(email:string):Promise<void> {
     const telefone:any = document.getElementById("telefone")
     const dia:any = document.getElementById("dia")
     const hora:any = document.getElementById("hora")
-    const resposta:any = document.getElementById("resposta")
     const apiUrl:string = 'http://127.0.0.1:80/' + email.value
     const Getresponse:Response = await fetch(apiUrl)
     if (!Getresponse.ok) {
@@ -137,7 +124,6 @@ async function listarChamadosUser(email:string):Promise<void> {
       user.value = username
       telefone.value = userphone
     }
-    resposta.value = ""
     const date = new Date()
     dia.value = date.toLocaleDateString()
     hora.value = date.toLocaleTimeString()
@@ -150,7 +136,34 @@ async function listarChamadosUser(email:string):Promise<void> {
     
     if (response.status == 201) {
       alert('Chamado registrado com sucesso!')
-      listarChamadosUser(email.value)
+      window.location.reload()
+      return true
+    } else if (response.status == 409) {
+      alert('Chamado já tem registro!')
+      return false
+    } else {
+      alert('Falha ao registrar! Fale com o suporte')
+      return false
+    }
+  }
+
+  async function enviarChamadoAdm(event:any):Promise<boolean> {
+    event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
+    const dia:any = document.getElementById("dia")
+    const hora:any = document.getElementById("hora")
+    const date = new Date()
+    dia.value = date.toLocaleDateString()
+    hora.value = date.toLocaleTimeString()
+
+    const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
+    const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
+      method: 'POST',
+      body: formData
+    })
+    
+    if (response.status == 201) {
+      alert('Chamado registrado com sucesso!')
+      window.location.reload()
       return true
     } else if (response.status == 409) {
       alert('Chamado já tem registro!')

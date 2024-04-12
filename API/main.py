@@ -12,7 +12,10 @@ chamados = []
 # Rota para listar todos os usuários
 @app.route('/getall', methods=['GET'])
 def lista_usuarios():
-    return jsonify(usuarios)
+    if usuarios:
+      return jsonify(usuarios)
+    else:
+      return jsonify({"error":"Nenhum usuário cadastrado até o momento"}), 404
 
 # Rota para obter um usuário pelo email
 @app.route('/<email>', methods=['GET'])
@@ -22,7 +25,15 @@ def get_usuarios(email):
       return jsonify(usuario)
   return jsonify({"error": "Usuário não encontrado"}), 404
 
-# Rota para obter um usuário pelo email
+# Rota para obter a lista de chamados
+@app.route('/chamado/getall', methods=['GET'])
+def get_todos_chamados():
+  if chamados:
+      return jsonify(chamados)
+  else:
+      return jsonify({"error": "Nenhum chamado registrado até o momento"}), 404
+
+# Rota para obter uma lista de chamados pelo email
 @app.route('/chamado/<email>', methods=['GET'])
 def get_chamado(email):
   chamados_cliente = [chamado for chamado in chamados if chamado['email'] == email]
@@ -59,9 +70,9 @@ def add_usuario():
     
 # Rota para adicionar um novo chamado
 @app.route('/novochamado', methods=['POST'])
-def add_chamdo():
+def add_chamado():
     # Verifica se todos os campos necessários estão presentes no formulário
-    required_fields = ['user', 'email', 'telefone', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta']
+    required_fields = ['user', 'email', 'telefone', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta','adm']
     for field in required_fields:
         if field not in request.form:
             return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
@@ -75,6 +86,7 @@ def add_chamdo():
     problema_chamado = request.form['problema']
     detalhes_chamado = request.form['detalhes']
     resposta_chamado = request.form['resposta']
+    adm_chamado = request.form['adm']
 
     for chamado in chamados:
         if chamado['problema'] == problema_chamado and chamado['detalhes'] == detalhes_chamado and chamado['email'] == email_chamado:
@@ -91,7 +103,8 @@ def add_chamdo():
         "setor": setor_chamado,
         "problema": problema_chamado,
         "detalhes": detalhes_chamado,
-        "resposta": resposta_chamado
+        "resposta": resposta_chamado,
+        "adm": adm_chamado
     }
     chamados.append(novo_chamado)
     return jsonify({"message": "Chamado registrado com sucesso.", "id": id}), 201

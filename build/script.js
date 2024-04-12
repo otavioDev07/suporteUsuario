@@ -44,7 +44,7 @@ function listarChamadosGestao() {
             switch (_a.label) {
                 case 0:
                     listaChamados = document.getElementById("listaChamados");
-                    apiUrl = 'http://127.0.0.1/getall';
+                    apiUrl = 'http://127.0.0.1:80/chamado/getall';
                     return [4 /*yield*/, fetch(apiUrl)];
                 case 1:
                     response = _a.sent();
@@ -54,12 +54,13 @@ function listarChamadosGestao() {
                 case 2: return [4 /*yield*/, response.json()];
                 case 3:
                     data = _a.sent();
+                    listaChamados.innerHTML = "";
                     for (_i = 0, data_1 = data; _i < data_1.length; _i++) {
                         item = data_1[_i];
-                        listaChamados.innerHTML = "\n        <div class=\"card col-12 col-lg-4\">\n        <div class=\"card-body\">\n          <h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5>\n          <div class=\"d-flex justify-content-between\">\n            <h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.problema, "</h6>\n            <h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6>\n            <h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6>\n            <h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6>\n          </div>\n          <p class=\"card-text\">").concat(item.detalhes, "</p>\n          <div id=\"cardResposta\"></div>\n        </div>\n      </div>\n        "); //adiciona card com informações do chamado
+                        listaChamados.innerHTML += "<div class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado
                         cardResposta = document.getElementById("cardResposta");
-                        if (item.resposta) {
-                            cardResposta.innerHTML = "\n            <hr>\n            <h5 class=\"card-title\">Resposta</h5>\n            <p class=\"card-text\">".concat(item.resposta, "</p>\n          ");
+                        if (item.resposta.trim() != "") {
+                            cardResposta.innerHTML += "\n          <hr>\n          <h5 class=\"card-title\">Resposta</h5>\n          <p class=\"card-text\">".concat(item.resposta, "</p>\n        ");
                         }
                     }
                     _a.label = 4;
@@ -160,7 +161,7 @@ function enviarDados(event) {
 }
 function enviarChamado(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, email, telefone, dia, hora, resposta, apiUrl, Getresponse, data, username, userphone, date, formData, response;
+        var user, email, telefone, dia, hora, apiUrl, Getresponse, data, username, userphone, date, formData, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -170,7 +171,6 @@ function enviarChamado(event) {
                     telefone = document.getElementById("telefone");
                     dia = document.getElementById("dia");
                     hora = document.getElementById("hora");
-                    resposta = document.getElementById("resposta");
                     apiUrl = 'http://127.0.0.1:80/' + email.value;
                     return [4 /*yield*/, fetch(apiUrl)];
                 case 1:
@@ -187,7 +187,6 @@ function enviarChamado(event) {
                     telefone.value = userphone;
                     _a.label = 4;
                 case 4:
-                    resposta.value = "";
                     date = new Date();
                     dia.value = date.toLocaleDateString();
                     hora.value = date.toLocaleTimeString();
@@ -201,7 +200,45 @@ function enviarChamado(event) {
                     response = _a.sent();
                     if (response.status == 201) {
                         alert('Chamado registrado com sucesso!');
-                        listarChamadosUser(email.value);
+                        window.location.reload();
+                        return [2 /*return*/, true];
+                    }
+                    else if (response.status == 409) {
+                        alert('Chamado já tem registro!');
+                        return [2 /*return*/, false];
+                    }
+                    else {
+                        alert('Falha ao registrar! Fale com o suporte');
+                        return [2 /*return*/, false];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function enviarChamadoAdm(event) {
+    return __awaiter(this, void 0, void 0, function () {
+        var dia, hora, date, formData, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault(); //método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
+                    dia = document.getElementById("dia");
+                    hora = document.getElementById("hora");
+                    date = new Date();
+                    dia.value = date.toLocaleDateString();
+                    hora.value = date.toLocaleTimeString();
+                    formData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
+                    ;
+                    return [4 /*yield*/, fetch('http://127.0.0.1:80/novochamado', {
+                            method: 'POST',
+                            body: formData
+                        })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status == 201) {
+                        alert('Chamado registrado com sucesso!');
+                        window.location.reload();
                         return [2 /*return*/, true];
                     }
                     else if (response.status == 409) {
