@@ -172,7 +172,8 @@ async function listarChamadosUser(email:string):Promise<void> {
   }
   
   // verificarUsuario(): Essa função verifica se um usuário com o CPF fornecido está cadastrado no sistema. Ela faz uma solicitação à API para obter informações sobre o usuário e exibe uma mensagem dependendo do status do usuário (ativo ou bloqueado).
-  async function verificarUsuario():Promise<void> {
+  async function verificarUsuario(event:any):Promise<void> {
+    event.preventDefault()
     try {
       const adm:any = document.getElementById("adm").value
       const formData:FormData = new FormData(document.getElementById('formulario'))

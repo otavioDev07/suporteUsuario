@@ -259,14 +259,16 @@ function liberarAdm() {
     admCampo.style.display = "block";
 }
 // verificarUsuario(): Essa função verifica se um usuário com o CPF fornecido está cadastrado no sistema. Ela faz uma solicitação à API para obter informações sobre o usuário e exibe uma mensagem dependendo do status do usuário (ativo ou bloqueado).
-function verificarUsuario() {
+function verificarUsuario(event) {
     return __awaiter(this, void 0, void 0, function () {
         var adm_1, formData, response, data, error_2;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    event.preventDefault();
                     _a.trys.push([0, 5, , 6]);
                     adm_1 = document.getElementById("adm").value;
+                    alert(adm_1)
                     formData = new FormData(document.getElementById('formulario'));
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/login', {
                             method: 'POST',
