@@ -122,11 +122,17 @@ def add_chamado():
         if field not in request.form:
             return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
 
+    #Obtenção da hora atual
+    agora = datetime.datetime.now()
+    hora = agora.hour
+    minuto = agora.minute
+    segundo = agora.second
+
     nome_chamado = request.form['user']
     email_chamado = request.form['email']
     telefone_chamado = request.form['telefone']
-    dia_chamado = request.form['dia']
-    hora_chamado = request.form['hora']
+    dia_chamado = datetime.date.today()
+    hora_chamado = f'{hora}:{minuto}'
     setor_chamado = request.form['setor']
     problema_chamado = request.form['problema']
     detalhes_chamado = request.form['detalhes']
