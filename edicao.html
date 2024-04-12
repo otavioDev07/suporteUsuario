@@ -23,6 +23,8 @@
                 if (infos["logado"] != "true"){
                     alert(infos['logado'])
                     window.location.href = "login.html"
+                } else{
+                    editarChamado(infos['id'],infos["userEmail"],infos["logado"])
                 }
             } else {
                 alert('Parâmetro "Email do usuário" ou "Situação de login" não encontrado na URL.')
@@ -40,15 +42,7 @@
             <section id="formSection" class="d-flex flex-fill flex-column justify-content-center align-items-center container-fluid">
                 <form class="text-center col-10 col-lg-10 needs-validation border rounded p-4" id="formulario" novalidate>
                     <div class="form-floating mb-3 col-12">
-                        <h1>Registrar chamado</h1>
-                    </div>
-                    <div class="form-floating mb-3 col-12 d-none">
-                        <input class="form-control" placeholder=""  type="text" id="dia" name="dia">
-                        <label class="ms-2" for="user">Data:</label>
-                    </div>
-                    <div class="form-floating mb-3 col-12 d-none">
-                        <input class="form-control" placeholder=""  type="text" id="hora" name="hora">
-                        <label class="ms-2" for="user">Horário:</label>
+                        <h1>Editar chamado</h1>
                     </div>
                     <div class="form-floating mb-3 col-12">
                         <input class="form-control" placeholder=""  type="text" id="setor" name="setor" required>
@@ -62,7 +56,7 @@
                         <textarea class="form-control" name="detalhes" id="detalhes" cols="30" rows="100" style="resize: none;" required></textarea>
                         <label class="ms-2" for="email">Detalhes:</label>
                     </div>
-                    <button id="cadastrarbtn" type="submit" class="btn btn-primary m-3" onclick="enviarChamado(event)">Alterar</button>
+                    <button id="cadastrarbtn" type="submit" class="btn btn-primary m-3" onclick="alterarChamado(event)">Alterar</button>
                 </form>
             </section>
         </main>

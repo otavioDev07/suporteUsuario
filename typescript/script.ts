@@ -13,8 +13,6 @@ async function listarChamadosGestao():Promise<void> {
     const data:any = await response.json()
     listaChamados.innerHTML = ""
     for (let item of data) {  
-      alert(item.user)
-      alert(item.telefone)
       listaChamados.innerHTML += `<div class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
       const cardResposta:any = document.getElementById("cardResposta")
       if(item.resposta.trim() != ""){
@@ -63,28 +61,28 @@ async function listarChamadosUser(email:string):Promise<void> {
         body: formData
     });
 
-    let responseData:Response; // Declaração da variável responseData
+    let responseData:Response // Declaração da variável responseData
     
     try {
         responseData = await response.json(); // Extrai o corpo da resposta JSON
     } catch (error) {
-        console.error('Erro ao processar a resposta JSON:', error);
-        return false;
+        console.error('Erro ao processar a resposta JSON:', error)
+        return false
     }
 
     if (response.status === 201) {
-        alert('Usuário cadastrado com sucesso!');
-        window.location.href = "login.html";
+        alert('Usuário cadastrado com sucesso!')
+        window.location.href = "login.html"
         return true;
     } else if (response.status === 409) {
-        alert('Usuário já tem cadastro!');
+        alert('Usuário já tem cadastro!')
         return false;
     } else if (response.status === 400) { // Se o status for 400, exibe a mensagem retornada pelo servidor
-        alert(responseData.message); // Exibe a mensagem retornada pelo servidor
-        return false;
+        alert(responseData.message) // Exibe a mensagem retornada pelo servidor
+        return false
     } else {
-        alert('Falha ao cadastrar! Fale com o suporte');
-        return false;
+        alert('Falha ao cadastrar! Fale com o suporte')
+        return false
     }
 }
 
@@ -94,8 +92,6 @@ async function listarChamadosUser(email:string):Promise<void> {
     const user:any = document.getElementById("user")
     const email:any = document.getElementById("email")
     const telefone:any = document.getElementById("telefone")
-    const dia:any = document.getElementById("dia")
-    const hora:any = document.getElementById("hora")
     const apiUrl:string = 'http://127.0.0.1:80/' + email.value
     const Getresponse:Response = await fetch(apiUrl)
     if (!Getresponse.ok) {
@@ -108,10 +104,7 @@ async function listarChamadosUser(email:string):Promise<void> {
       user.value = username
       telefone.value = userphone
     }
-    const date = new Date()
-    dia.value = date.toLocaleDateString()
-    hora.value = date.toLocaleTimeString()
-
+    
     const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
     const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
       method: 'POST',
@@ -158,37 +151,6 @@ async function listarChamadosUser(email:string):Promise<void> {
     }
   }
   
-  // validaSenha(): Esta função é utilizada para validar a senha inserida em um campo de formulário. Ela verifica se a senha é forte o suficiente.
-  
-  function validaSenha():boolean {
-    const senha:any = document.getElementById('senha').value
-    const user:any = document.getElementById('user').value
-    const email:any = document.getElementById('email').value
-
-    // Verifica se a senha é forte
-    if (senha.length < 8) {
-      alert("A senha precisa ter, pelo menos, 8 dígitos!")
-      return false
-    } else if(senha == user){
-        alert("Sua senha não pode ser igual a seu nome de usuário!")
-        return false
-    } else if(senha == email){
-        alert("Sua senha não pode ser igual a seu email!")
-        return false
-    } else if(!senha.match(/[a-z]/) && !senha.match(/[A-Z]/)){
-        alert("Misture letras maiúsculas e minúsculas!")
-        return false
-    } else if(!senha.match(/\d/)){
-        alert("Coloque pelo menos um número!")
-        return false
-    } else if(!senha.match(/[^a-zA-Z\d]/)){
-        alert("Inclua pelo menos um caractere especial!")
-        return false
-    } else{
-        // Retorna true se o CPF for válido
-        return true
-    }
-  }
 
   function validaAdm():boolean {
     const adm:any = document.getElementById('adm').value
@@ -278,7 +240,6 @@ async function listarChamadosUser(email:string):Promise<void> {
   
   async function editarChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
     try {
-      const 
       const apiUrl:string = 'http://127.0.0.1/chamado/' + id
       const response:Response = await fetch(apiUrl)
   
@@ -287,15 +248,15 @@ async function listarChamadosUser(email:string):Promise<void> {
       }
       else {
         const data:any = await response.json()
-        const email_cham:any = data.email
-        const setor_cham:any = data.setor
-        const problema_cham:any = data.problema
-        const detalhes_cham:any = data.detalhes
-        const id_cham:any = data.id
+        const email_chamado:any = data.email
+        const setor_chamado:any = data.setor
+        const problema_chamado:any = data.problema
+        const detalhes_chamado:any = data.detalhes
+        const id_chamado:any = data.id
   
-        document.getElementById("nome").value = nome
-        document.getElementById("cpf").value = cpf
-        document.getElementById("id").value = id
+        document.getElementById("setor").value = setor_chamado
+        document.getElementById("problema").value = problema_chamado
+        document.getElementById("detalhes").value = detalhes_chamado
       }
     }
     catch (error) {
@@ -305,7 +266,7 @@ async function listarChamadosUser(email:string):Promise<void> {
   
   // alterarDados(event): Esta função é chamada quando os dados de um usuário são alterados em um formulário de edição. Ela envia os dados atualizados para a API através de uma solicitação PUT para atualizar o usuário.
   
-  async function alterarDados(event:any):Promise<boolean>{
+  async function alterarChamados(event:any):Promise<boolean>{
     event.preventDefault() 
   
     const id:any = document.getElementById("id").value

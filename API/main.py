@@ -1,11 +1,11 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import datetime
 
 app = Flask(__name__)
 CORS(app)
 
-usuarios = [
-]
+usuarios = []
 chamados = []
 
 # Rota para listar todos os usuários
@@ -40,6 +40,14 @@ def get_chamado(email):
       return jsonify(chamados_cliente)
   else:
       return jsonify({"error": "Nenhum chamado encontrado para este cliente"}), 404
+
+# Rota para puxar chamado edição
+@app.route('/chamado/<id>', methods=['GET'])
+def get_chamadoEdicao():
+  for chamado in chamados:
+    if chamado['id'] == id:
+      return jsonify(chamado)
+  return jsonify({"error": "Chamado não encontrado"}), 404
 
 # Rota para obter um usuário pelo código
 @app.route('/login', methods=['POST'])
@@ -84,7 +92,7 @@ def add_usuario():
     
     # Verifica a validade da senha
     if len(senha_usuario) < 8:
-        return jsonify({"message": "A senha precisa ter, pelo menos, 8 dígitos!"}), 409
+        return jsonify({"message": "A senha precisa ter, pelo menos, 8 dígitos!"}), 400
     elif not verifique_senha(senha_usuario):
         if senha_usuario.islower():
             return jsonify({"message": "Faltam letras maiúsculas"}), 400
@@ -155,7 +163,7 @@ def edt_status(id):
         usuario['ativo'] = False
       else:
         usuario['ativo'] = True
-  return jsonify({"message": "Status alterado"}), 201      
+  return jsonify({"message": "Status alterado"}), 201    
 
 # # Rota para alterar informações do usuário
 # @app.route('/editar/<int:id>', methods=['PUT'])
