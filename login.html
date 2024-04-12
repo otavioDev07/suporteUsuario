@@ -38,12 +38,12 @@
                                 </div> 
     
                                <div class="input-field"  id="admCampo">
-                                    <input type="password" id="adm" name="adm" class="input">
+                                    <input type="password" id="adm" name="adm" class="input" required>
                                     <label for="pass">Chave de acesso</label>
                                 </div> 
     
                                <div class="input-field">
-                                    <input type="submit" class="submit" value="Entrar" id="logarbtn" name="logarbtn" onclick="verificarUsuario()"">
+                                    <input type="submit" class="submit" value="Entrar" id="logarbtn" name="logarbtn" onclick="verificarUsuario(event)"">
                                </div> 
                                <div class="signin">
                                 <span class="span-log">Selecionar o <a href="#" id="liberaAdm" onclick="liberarAdm()" >Modo administrador</a></span><br>
