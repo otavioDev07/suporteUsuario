@@ -5,7 +5,7 @@ import datetime
 app = Flask(__name__)
 CORS(app)
 
-usuarios = []
+usuarios = [{'user':'Ádillan','email':'adillan.soares@gmail.com','telefone':'15997357821','senha':'Adillan#123'}]
 chamados = []
 
 # Rota para listar todos os usuários
