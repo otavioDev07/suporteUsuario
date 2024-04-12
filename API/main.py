@@ -1,7 +1,6 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import datetime
-
+from datetime import datetime, date
 app = Flask(__name__)
 CORS(app)
 
@@ -123,15 +122,18 @@ def add_chamado():
             return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
 
     #Obtenção da hora atual
-    agora = datetime.datetime.now()
+    agora = datetime.now()
     hora = agora.hour
     minuto = agora.minute
-    segundo = agora.second
+
+    #Formatação dia 
+    hoje = date.today()
+    data_formatada = hoje.strftime("%d/%m/%Y")
 
     nome_chamado = request.form['user']
     email_chamado = request.form['email']
     telefone_chamado = request.form['telefone']
-    dia_chamado = datetime.date.today()
+    dia_chamado = data_formatada
     hora_chamado = f'{hora}:{minuto}'
     setor_chamado = request.form['setor']
     problema_chamado = request.form['problema']
