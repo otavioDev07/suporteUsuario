@@ -40,7 +40,7 @@ def get_chamado(email):
   else:
       return jsonify({"error": "Nenhum chamado encontrado para este cliente"}), 404
 
-# Rota para puxar chamado edição
+# Rota para puxar tela de edição
 @app.route('/chamado/<id>', methods=['GET'])
 def get_chamadoEdicao():
   for chamado in chamados:
@@ -173,7 +173,7 @@ def edt_status(id):
         usuario['ativo'] = True
   return jsonify({"message": "Status alterado"}), 201    
 
-# # Rota para alterar informações do usuário
+# # Rota para editar o chamado
 # @app.route('/editar/<int:id>', methods=['PUT'])
 # def alterar(id):
 #   nome_usuario = request.form['nome']
@@ -184,15 +184,15 @@ def edt_status(id):
 #       usuario['cpf']=cpf_usuario
 #   return jsonify({"message": "Alterações realizadas"}), 201
 
-# # Rota para excluir um usuário
-# @app.route('/deletar/<int:id>', methods=['DELETE'])
-# def deletar_usuario(id):
-#   for usuario in usuarios:
-#     if usuario['id'] == id:
-#       usuarios.remove(usuario)
-#       return jsonify({'message': 'Usuário deletado com sucesso'}), 200
-#   else:
-#     return jsonify({'error': 'Usuário não encontrado'}), 404
+# Rota para excluir um chamado
+@app.route('/deletar/<int:id>', methods=['DELETE'])
+def deletar_chamado(id):
+  for chamado in chamados:
+    if chamado['id'] == id:
+      chamados.remove(chamado)
+      return jsonify({'message': 'Chamado deletado com sucesso'}), 200
+  else:
+    return jsonify({'error': 'Chamado não encontrado'}), 404
           
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)
