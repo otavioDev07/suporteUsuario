@@ -126,17 +126,17 @@ async function listarChamadosUser(email:string):Promise<void> {
 
   async function enviarChamadoAdm(event:any):Promise<boolean> {
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
-    const dia:any = document.getElementById("dia")
-    const hora:any = document.getElementById("hora")
-    const date = new Date()
-    dia.value = date.toLocaleDateString()
-    hora.value = date.toLocaleTimeString()
+    // const dia:any = document.getElementById("dia")
+    // const hora:any = document.getElementById("hora")
+    // const date = new Date()
+    // dia.value = date.toLocaleDateString()
+    // hora.value = date.toLocaleTimeString()
 
     const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
     const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
       method: 'POST',
       body: formData
-    })
+    }) 
     
     if (response.status == 201) {
       alert('Chamado registrado com sucesso!')
