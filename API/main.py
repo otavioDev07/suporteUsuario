@@ -115,12 +115,6 @@ def add_usuario():
 # Rota para adicionar um novo chamado
 @app.route('/novochamado', methods=['POST'])
 def add_chamado():
-    # Verifica se todos os campos necessários estão presentes no formulário
-    required_fields = ['user', 'email', 'telefone', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta','status']
-    for field in required_fields:
-        if field not in request.form:
-            return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
-
     #Obtenção da hora atual
     agora = datetime.now()
     hora = agora.hour
