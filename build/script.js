@@ -69,9 +69,9 @@ function listarChamadosGestao() {
         });
     });
 }
-function listarChamadosUser(email) {
+function listarChamadosUser(email, login) {
     return __awaiter(this, void 0, void 0, function () {
-        var listaChamados, apiUrl, response, data, _i, data_2, item, cardResposta;
+        var listaChamados, apiUrl, response, data_3, _i, data_2, item, cards;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -85,16 +85,19 @@ function listarChamadosUser(email) {
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, response.json()];
                 case 3:
-                    data = _a.sent();
+                    data_3 = _a.sent();
                     listaChamados.innerHTML = "";
-                    for (_i = 0, data_2 = data; _i < data_2.length; _i++) {
+                    for (_i = 0, data_2 = data_3; _i < data_2.length; _i++) {
                         item = data_2[_i];
-                        listaChamados.innerHTML += "<div onclick=\"editaChamado(".concat(item.id, ")\" style=\"cursor: pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">").concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado
-                        cardResposta = document.getElementById("cardResposta");
-                        if (item.resposta.trim() != "") {
-                            cardResposta.innerHTML += "\n          <hr>\n          <h5 class=\"card-title\">Resposta</h5>\n          <p class=\"card-text\">".concat(item.resposta, "</p>\n        ");
-                        }
+                        listaChamados.innerHTML += "<div style=\"cursor: pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado 
                     }
+                    cards = document.querySelectorAll('.card');
+                    cards.forEach(function (card, index) {
+                        card.addEventListener('click', function () {
+                            var item = data_3[index];
+                            window.location.href = "detalhe.html?id=".concat(item.id, "&userEmail=").concat(email, "&logado=").concat(login);
+                        });
+                    });
                     _a.label = 4;
                 case 4: return [2 /*return*/];
             }
@@ -205,16 +208,11 @@ function enviarChamado(event) {
 }
 function enviarChamadoAdm(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var dia, hora, date, formData, response;
+        var formData, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault(); //método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
-                    dia = document.getElementById("dia");
-                    hora = document.getElementById("hora");
-                    date = new Date();
-                    dia.value = date.toLocaleDateString();
-                    hora.value = date.toLocaleTimeString();
                     formData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
                     ;
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/novochamado', {
@@ -266,21 +264,22 @@ function verificarUsuario(event) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
-                    _a.trys.push([0, 5, , 6]);
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 6, , 7]);
                     adm_1 = document.getElementById("adm").value;
-                    alert(adm_1)
                     formData = new FormData(document.getElementById('formulario'));
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/login', {
                             method: 'POST',
                             body: formData
                         })];
-                case 1:
+                case 2:
                     response = _a.sent();
-                    if (!!response.ok) return [3 /*break*/, 2];
+                    if (!!response.ok) return [3 /*break*/, 3];
                     alert('Usuário não encontrado!');
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, response.json()];
-                case 3:
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
                     data = _a.sent();
                     logado = true;
                     loginEmail = data.email;
@@ -294,13 +293,13 @@ function verificarUsuario(event) {
                             window.location.href = urlEditar;
                         }
                     }, 2000);
-                    _a.label = 4;
-                case 4: return [3 /*break*/, 6];
-                case 5:
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
                     error_2 = _a.sent();
                     console.error("API com problemas!");
-                    return [3 /*break*/, 6];
-                case 6: return [2 /*return*/];
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -340,26 +339,107 @@ function preencherHome(userEmail, logado) {
         });
     });
 }
-// Envia para a página de edição
-function editaChamado(id, userEmail, logado) {
+// Preenche a página do Chamado
+function preencherDetalhe(id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var urlEditar;
+        var buttons, pencilButton, problemaTxt, statusTxt, usuarioTxt, telefoneTxt, setorTxt, diaTxt, detalhesTxt, respostaTxt, apiUrl, response, data, user, email, telefone, dia, hora, setor, problema, detalhes, resposta, status_1, error_4;
         return __generator(this, function (_a) {
-            urlEditar = "edicao.html?id=".concat(id, "+useremail=").concat(userEmail, "+logado=").concat(logado);
-            window.location.href = urlEditar; //permite redirecionar o navegador para o URL fornecido
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 6, , 7]);
+                    if (!(logado == false)) return [3 /*break*/, 1];
+                    window.location.href = "login.html";
+                    return [3 /*break*/, 5];
+                case 1:
+                    buttons = document.getElementById('buttons');
+                    pencilButton = document.getElementById('pencilButton');
+                    problemaTxt = document.getElementById("problemaTxt");
+                    statusTxt = document.getElementById('statusTxt');
+                    usuarioTxt = document.getElementById("usuarioTxt");
+                    telefoneTxt = document.getElementById("telefoneTxt");
+                    setorTxt = document.getElementById('setorTxt');
+                    diaTxt = document.getElementById('diaTxt');
+                    detalhesTxt = document.getElementById('detalhesTxt');
+                    respostaTxt = document.getElementById('repostaTxt');
+                    apiUrl = 'http://127.0.0.1:80/chamadoid/' + id;
+                    return [4 /*yield*/, fetch(apiUrl)];
+                case 2:
+                    response = _a.sent();
+                    if (!!response.ok) return [3 /*break*/, 3];
+                    alert('Chamado não encontrado!');
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
+                    data = _a.sent();
+                    user = data.user;
+                    email = data.email;
+                    telefone = data.telefone;
+                    dia = data.dia;
+                    hora = data.hora;
+                    setor = data.setor;
+                    problema = data.problema;
+                    detalhes = data.detalhes;
+                    resposta = data.resposta;
+                    status_1 = data.status;
+                    problemaTxt.innerText = problema;
+                    if (status_1 == "Em Aberto") {
+                        statusTxt.innerText = status_1;
+                        statusTxt.classList.remove('bg-success');
+                        statusTxt.classList.add('bg-danger');
+                    }
+                    else {
+                        statusTxt.innerText = status_1;
+                        statusTxt.classList.remove('bg-danger');
+                        statusTxt.classList.add('bg-success');
+                    }
+                    usuarioTxt.innerText = user;
+                    telefoneTxt.innerText = telefone;
+                    setorTxt.innerText = setor;
+                    diaTxt.innerText = "".concat(dia, " - ").concat(hora);
+                    detalhesTxt.innerText = detalhes;
+                    if (resposta.trim() == "" || !resposta) {
+                        respostaTxt.innerText = "A equipe de TI ainda não comentou esse chamado.";
+                    }
+                    else {
+                        respostaTxt.innerText = resposta;
+                    }
+                    if (userEmail == email) {
+                        buttons.style.display = 'flex';
+                        if (status_1 == "Fechado") {
+                            pencilButton.style.display = 'none';
+                        }
+                        else {
+                            pencilButton.style.display = 'block';
+                        }
+                    }
+                    else {
+                        buttons.style.display = 'none';
+                    }
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
+                    error_4 = _a.sent();
+                    console.error("API com problemas!");
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
         });
     });
 }
+// // Envia para a página de edição
+// async function editaChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
+//   const urlEditar:string = `edicao.html?id=${id}&useremail=${userEmail}&logado=${logado}`
+//   window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
+// }
 // editarUsuario(cpf): Esta função é responsável por preencher um formulário de edição com os dados de um usuário existente. Ela faz uma solicitação à API para obter os dados do usuário com o CPF fornecido.
-function editarChamado(id, userEmail, logado) {
+function preenhcerEdicao(id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var apiUrl, response, data, email_chamado, setor_chamado, problema_chamado, detalhes_chamado, id_chamado, error_4;
+        var apiUrl, response, data, email_chamado, setor_chamado, problema_chamado, detalhes_chamado, id_chamado, error_5;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     _a.trys.push([0, 5, , 6]);
-                    apiUrl = 'http://127.0.0.1/chamado/' + id;
+                    apiUrl = 'http://127.0.0.1/chamadoid/' + id;
                     return [4 /*yield*/, fetch(apiUrl)];
                 case 1:
                     response = _a.sent();
@@ -380,7 +460,7 @@ function editarChamado(id, userEmail, logado) {
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    error_4 = _a.sent();
+                    error_5 = _a.sent();
                     console.error("API com problemas!");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
@@ -389,14 +469,13 @@ function editarChamado(id, userEmail, logado) {
     });
 }
 // alterarDados(event): Esta função é chamada quando os dados de um usuário são alterados em um formulário de edição. Ela envia os dados atualizados para a API através de uma solicitação PUT para atualizar o usuário.
-function alterarChamados(event) {
+function alterarChamado(event, id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var id, apiUrl, formData, response;
+        var apiUrl, formData, response, urlEditar, urlEditar;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
-                    id = document.getElementById("id").value;
                     apiUrl = 'http://127.0.0.1:80/editar/' + id;
                     formData = new FormData(document.getElementById('formulario'));
                     return [4 /*yield*/, fetch(apiUrl, {
@@ -406,12 +485,15 @@ function alterarChamados(event) {
                 case 1:
                     response = _a.sent();
                     if (response.status == 201) {
-                        alert('Usuário alterado com sucesso!');
-                        window.location.href = "gestao.html";
+                        alert('Chamado alterado com sucesso!');
+                        urlEditar = "home.html?userEmail=".concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
                         return [2 /*return*/, true];
                     }
                     else {
                         alert('Falha ao alterar! Fale com o suporte');
+                        urlEditar = "home.html?userEmail=".concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
                         return [2 /*return*/, false];
                     }
                     return [2 /*return*/];
@@ -420,9 +502,9 @@ function alterarChamados(event) {
     });
 }
 // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
-function excluir(id) {
+function excluir(id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var apiUrl, response;
+        var apiUrl, response, urlEditar, urlEditar;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -431,12 +513,15 @@ function excluir(id) {
                 case 1:
                     response = _a.sent();
                     if (response.status == 200) {
-                        alert('Usuário deletado com sucesso!');
-                        window.location.href = "gestao.html";
+                        alert('Chamado deletado com sucesso!');
+                        urlEditar = "home.html?userEmail=".concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
                         return [2 /*return*/, true];
                     }
                     else {
                         alert('Falha ao excluir! Fale com o suporte');
+                        urlEditar = "home.html?userEmail=".concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
                         return [2 /*return*/, false];
                     }
                     return [2 /*return*/];

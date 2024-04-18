@@ -40,11 +40,11 @@ def get_chamado(email):
   else:
       return jsonify({"error": "Nenhum chamado encontrado para este cliente"}), 404
 
-# Rota para puxar tela de edição
-@app.route('/chamado/<id>', methods=['GET'])
-def get_chamadoEdicao():
+# Rota para pegar chamado pelo seu id
+@app.route('/chamadoid/<id>', methods=['GET'])
+def get_chamadoEdicao(id):
   for chamado in chamados:
-    if chamado['id'] == id:
+    if chamado['id'] == int(id):
       return jsonify(chamado)
   return jsonify({"error": "Chamado não encontrado"}), 404
 
@@ -166,6 +166,32 @@ def edt_status(id):
       else:
         usuario['ativo'] = True
   return jsonify({"message": "Status alterado"}), 201    
+
+# # Rota para editar o chamado
+@app.route('/editar/<int:id>', methods=['PUT'])
+def alterar(id):
+  #Obtenção da hora atual
+  agora = datetime.now()
+  hora = agora.hour
+  minuto = agora.minute
+
+  #Formatação dia 
+  hoje = date.today()
+  data_formatada = hoje.strftime("%d/%m/%Y")
+
+  dia_chamado = data_formatada
+  hora_chamado = f'{hora}:{minuto}'
+  setor_chamado = request.form['setor']
+  problema_chamado = request.form['problema']
+  detalhes_chamado = request.form['detalhes']
+  for chamado in chamados:
+    if chamado['id'] == id:
+      chamado['setor'] = setor_chamado
+      chamado['problema'] = problema_chamado
+      chamado['detalhes'] = detalhes_chamado
+      chamado['dia'] = dia_chamado
+      chamado['hora'] = hora_chamado
+  return jsonify({"message": "Alterações realizadas"}), 201
 
 # Rota para excluir um chamado
 @app.route('/deletar/<int:id>', methods=['DELETE'])
