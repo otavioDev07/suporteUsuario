@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,11 +20,10 @@
             const infos = obterNumeroDaURL()
             if (infos) {
                 if (infos["logado"] != "true"){
-                    alert(infos['logado'])
                     window.location.href = "login.html"
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])
-                    listarChamadosUser(infos["userEmail"])
+                    listarChamadosUser(infos["userEmail"],infos['logado'])
                     document.getElementById("email").value = infos["userEmail"]
                     document.getElementById("status").value = "Em Aberto"
                     document.getElementById("resposta").value = ""

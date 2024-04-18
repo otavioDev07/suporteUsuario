@@ -24,7 +24,7 @@
                     alert(infos['logado'])
                     window.location.href = "login.html"
                 } else{
-                    editarChamado(infos['id'],infos["userEmail"],infos["logado"])
+                    preenhcerEdicao(infos['id'],infos["userEmail"],infos["logado"])
                 }
             } else {
                 alert('Parâmetro "Email do usuário" ou "Situação de login" não encontrado na URL.')
@@ -56,12 +56,19 @@
                         <textarea class="form-control" name="detalhes" id="detalhes" cols="30" rows="100" style="resize: none;" required></textarea>
                         <label class="ms-2" for="email">Detalhes:</label>
                     </div>
-                    <button id="cadastrarbtn" type="submit" class="btn btn-primary m-3" onclick="alterarChamado(event)">Alterar</button>
+                    <button id="alterarbtn" type="submit" class="btn btn-primary m-3" onclick="alterarChamado(event)">Alterar</button>
                 </form>
             </section>
         </main>
         <footer></footer>
 
     <script src="build/script.js"></script>
+    <script>
+        const infos = obterNumeroDaURL()
+        let alterarbtn = document.getElementById("alterarbtn")
+        alterarbtn.addEventListener('click',() => {
+            alterarChamado(event,infos['id'],infos['userEmail'],infos['logado'])
+        })
+    </script>
 </body>
 </html>
