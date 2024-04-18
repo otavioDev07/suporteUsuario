@@ -167,17 +167,6 @@ def edt_status(id):
         usuario['ativo'] = True
   return jsonify({"message": "Status alterado"}), 201    
 
-# # Rota para editar o chamado
-# @app.route('/editar/<int:id>', methods=['PUT'])
-# def alterar(id):
-#   nome_usuario = request.form['nome']
-#   cpf_usuario = int(request.form['cpf'])
-#   for usuario in usuarios:
-#     if usuario['id'] == id:
-#       usuario['nome']=nome_usuario
-#       usuario['cpf']=cpf_usuario
-#   return jsonify({"message": "Alterações realizadas"}), 201
-
 # Rota para excluir um chamado
 @app.route('/deletar/<int:id>', methods=['DELETE'])
 def deletar_chamado(id):
