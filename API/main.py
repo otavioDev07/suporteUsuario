@@ -129,6 +129,8 @@ def add_chamado():
     telefone_chamado = request.form['telefone']
     dia_chamado = data_formatada
     hora_chamado = f'{hora}:{minuto}'
+    dia_resposta = ""
+    hora_resposta = ""
     setor_chamado = request.form['setor']
     problema_chamado = request.form['problema']
     detalhes_chamado = request.form['detalhes']
@@ -159,15 +161,15 @@ def add_chamado():
 # Rota para alterar status do usuário
 @app.route('/status/<int:id>')
 def edt_status(id):
-  for usuario in usuarios:
-    if usuario['id'] == id:
-      if usuario['ativo'] == True:
-        usuario['ativo'] = False
+  for chamado in chamados:
+    if chamado['id'] == id:
+      if chamado['status'] == "Em Aberto":
+        chamado['status'] = "Fechado"
       else:
-        usuario['ativo'] = True
+        chamado['status'] = "Em Aberto"
   return jsonify({"message": "Status alterado"}), 201    
 
-# # Rota para editar o chamado
+# Rota para editar o chamado
 @app.route('/editar/<int:id>', methods=['PUT'])
 def alterar(id):
   #Obtenção da hora atual
@@ -192,6 +194,30 @@ def alterar(id):
       chamado['dia'] = dia_chamado
       chamado['hora'] = hora_chamado
   return jsonify({"message": "Alterações realizadas"}), 201
+
+# Rota para responder o chamado
+@app.route('/responder/<int:id>', methods=['PUT'])
+def responder(id):
+  #Obtenção da hora atual
+  agora = datetime.now()
+  hora = agora.hour
+  minuto = agora.minute
+
+  #Formatação dia 
+  hoje = date.today()
+  data_formatada = hoje.strftime("%d/%m/%Y")
+
+  dia_resposta = data_formatada
+  hora_resposta = f'{hora}:{minuto}'
+  resposta_chamado = request.form['resposta']
+  for chamado in chamados:
+    if chamado['id'] == id:
+      if chamado['resposta'] == resposta_chamado:
+         return jsonify({'message':'Comentário já registrado'}), 400
+      chamado['resposta'] = resposta_chamado
+      chamado['diaResposta'] = dia_resposta
+      chamado['horaResposta'] = hora_resposta
+  return jsonify({"message": "Comentário registrado"}), 201
 
 # Rota para excluir um chamado
 @app.route('/deletar/<int:id>', methods=['DELETE'])

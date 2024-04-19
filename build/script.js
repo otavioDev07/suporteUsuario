@@ -37,9 +37,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var logado = false;
 var loginEmail = "";
 // listarUsuariosGestao(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
-function listarChamadosGestao() {
+function listarChamadosGestao(email, login) {
     return __awaiter(this, void 0, void 0, function () {
-        var listaChamados, apiUrl, response, data, _i, data_1, item, cardResposta;
+        var listaChamados, apiUrl, response, data_2, _i, data_1, item, cards;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -53,16 +53,19 @@ function listarChamadosGestao() {
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, response.json()];
                 case 3:
-                    data = _a.sent();
+                    data_2 = _a.sent();
                     listaChamados.innerHTML = "";
-                    for (_i = 0, data_1 = data; _i < data_1.length; _i++) {
+                    for (_i = 0, data_1 = data_2; _i < data_1.length; _i++) {
                         item = data_1[_i];
-                        listaChamados.innerHTML += "<div class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado
-                        cardResposta = document.getElementById("cardResposta");
-                        if (item.resposta.trim() != "") {
-                            cardResposta.innerHTML += "\n          <hr>\n          <h5 class=\"card-title\">Resposta</h5>\n          <p class=\"card-text\">".concat(item.resposta, "</p>\n        ");
-                        }
+                        listaChamados.innerHTML += "<div style=\"cursor:pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p></div></div>"); //adiciona card com informações do chamado
                     }
+                    cards = document.querySelectorAll('.card');
+                    cards.forEach(function (card, index) {
+                        card.addEventListener('click', function () {
+                            var item = data_2[index];
+                            window.location.href = "gestaoDetalhe.html?id=".concat(item.id, "&userEmail=").concat(email, "&logado=").concat(login);
+                        });
+                    });
                     _a.label = 4;
                 case 4: return [2 /*return*/];
             }
@@ -71,7 +74,7 @@ function listarChamadosGestao() {
 }
 function listarChamadosUser(email, login) {
     return __awaiter(this, void 0, void 0, function () {
-        var listaChamados, apiUrl, response, data_3, _i, data_2, item, cards;
+        var listaChamados, apiUrl, response, data_4, _i, data_3, item, cards;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -85,16 +88,16 @@ function listarChamadosUser(email, login) {
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, response.json()];
                 case 3:
-                    data_3 = _a.sent();
+                    data_4 = _a.sent();
                     listaChamados.innerHTML = "";
-                    for (_i = 0, data_2 = data_3; _i < data_2.length; _i++) {
-                        item = data_2[_i];
-                        listaChamados.innerHTML += "<div style=\"cursor: pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p><div id=\"cardResposta\"></div></div></div>"); //adiciona card com informações do chamado 
+                    for (_i = 0, data_3 = data_4; _i < data_3.length; _i++) {
+                        item = data_3[_i];
+                        listaChamados.innerHTML += "<div style=\"cursor: pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p></div></div>"); //adiciona card com informações do chamado 
                     }
                     cards = document.querySelectorAll('.card');
                     cards.forEach(function (card, index) {
                         card.addEventListener('click', function () {
-                            var item = data_3[index];
+                            var item = data_4[index];
                             window.location.href = "detalhe.html?id=".concat(item.id, "&userEmail=").concat(email, "&logado=").concat(login);
                         });
                     });
@@ -170,6 +173,7 @@ function enviarChamado(event) {
                     Getresponse = _a.sent();
                     if (!!Getresponse.ok) return [3 /*break*/, 2];
                     alert('Usuário não encontrado!');
+                    window.location.href = "login.html";
                     return [3 /*break*/, 4];
                 case 2: return [4 /*yield*/, Getresponse.json()];
                 case 3:
@@ -277,6 +281,7 @@ function verificarUsuario(event) {
                     response = _a.sent();
                     if (!!response.ok) return [3 /*break*/, 3];
                     alert('Usuário não encontrado!');
+                    window.location.href = "login.hmtl";
                     return [3 /*break*/, 5];
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
@@ -322,6 +327,7 @@ function preencherHome(userEmail, logado) {
                     response = _a.sent();
                     if (!!response.ok) return [3 /*break*/, 3];
                     alert('Usuário não encontrado!');
+                    window.location.href = "login.html";
                     return [3 /*break*/, 5];
                 case 3: return [4 /*yield*/, response.json()];
                 case 4:
@@ -342,7 +348,7 @@ function preencherHome(userEmail, logado) {
 // Preenche a página do Chamado
 function preencherDetalhe(id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var buttons, pencilButton, problemaTxt, statusTxt, usuarioTxt, telefoneTxt, setorTxt, diaTxt, detalhesTxt, respostaTxt, apiUrl, response, data, user, email, telefone, dia, hora, setor, problema, detalhes, resposta, status_1, error_4;
+        var buttons, pencilButton, problemaTxt, statusTxt, usuarioTxt, telefoneTxt, setorTxt, diaTxt, detalhesTxt, diaRespostaTxt, respostaTxt, apiUrl, response, data, user, email, telefone, dia, hora, diaResposta, horaResposta, setor, problema, detalhes, resposta, status_1, error_4;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -360,6 +366,7 @@ function preencherDetalhe(id, userEmail, logado) {
                     setorTxt = document.getElementById('setorTxt');
                     diaTxt = document.getElementById('diaTxt');
                     detalhesTxt = document.getElementById('detalhesTxt');
+                    diaRespostaTxt = document.getElementById('diaRespostaTxt');
                     respostaTxt = document.getElementById('repostaTxt');
                     apiUrl = 'http://127.0.0.1:80/chamadoid/' + id;
                     return [4 /*yield*/, fetch(apiUrl)];
@@ -376,6 +383,8 @@ function preencherDetalhe(id, userEmail, logado) {
                     telefone = data.telefone;
                     dia = data.dia;
                     hora = data.hora;
+                    diaResposta = data.diaResposta;
+                    horaResposta = data.horaResposta;
                     setor = data.setor;
                     problema = data.problema;
                     detalhes = data.detalhes;
@@ -399,9 +408,12 @@ function preencherDetalhe(id, userEmail, logado) {
                     detalhesTxt.innerText = detalhes;
                     if (resposta.trim() == "" || !resposta) {
                         respostaTxt.innerText = "A equipe de TI ainda não comentou esse chamado.";
+                        diaRespostaTxt.style.display = 'none';
                     }
                     else {
                         respostaTxt.innerText = resposta;
+                        diaRespostaTxt.style.display = "block";
+                        diaRespostaTxt.innerText = "".concat(diaResposta, " - ").concat(horaResposta);
                     }
                     if (userEmail == email) {
                         buttons.style.display = 'flex';
@@ -426,15 +438,116 @@ function preencherDetalhe(id, userEmail, logado) {
         });
     });
 }
+// Preenche a página do Chamado
+function preencherDetalheGestao(id, logado) {
+    return __awaiter(this, void 0, void 0, function () {
+        var pencilButton, problemaTxt, statusTxt, usuarioTxt, telefoneTxt, setorTxt, diaTxt, detalhesTxt, diaRespostaTxt, respostaTxt, apiUrl, response, data, user, email, telefone, dia, hora, diaResposta, horaResposta, setor, problema, detalhes, resposta, status_2, error_5;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 6, , 7]);
+                    if (!(logado == false)) return [3 /*break*/, 1];
+                    window.location.href = "login.html";
+                    return [3 /*break*/, 5];
+                case 1:
+                    pencilButton = document.getElementById('pencilButton');
+                    problemaTxt = document.getElementById("problemaTxt");
+                    statusTxt = document.getElementById('statusTxt');
+                    usuarioTxt = document.getElementById("usuarioTxt");
+                    telefoneTxt = document.getElementById("telefoneTxt");
+                    setorTxt = document.getElementById('setorTxt');
+                    diaTxt = document.getElementById('diaTxt');
+                    detalhesTxt = document.getElementById('detalhesTxt');
+                    diaRespostaTxt = document.getElementById('diaRespostaTxt');
+                    respostaTxt = document.getElementById('repostaTxt');
+                    apiUrl = 'http://127.0.0.1:80/chamadoid/' + id;
+                    return [4 /*yield*/, fetch(apiUrl)];
+                case 2:
+                    response = _a.sent();
+                    if (!!response.ok) return [3 /*break*/, 3];
+                    alert('Chamado não encontrado!');
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, response.json()];
+                case 4:
+                    data = _a.sent();
+                    user = data.user;
+                    email = data.email;
+                    telefone = data.telefone;
+                    dia = data.dia;
+                    hora = data.hora;
+                    diaResposta = data.diaResposta;
+                    horaResposta = data.horaResposta;
+                    setor = data.setor;
+                    problema = data.problema;
+                    detalhes = data.detalhes;
+                    resposta = data.resposta;
+                    status_2 = data.status;
+                    problemaTxt.innerText = problema;
+                    if (status_2 == "Em Aberto") {
+                        statusTxt.innerText = status_2;
+                        statusTxt.classList.remove('bg-success');
+                        statusTxt.classList.add('bg-danger');
+                        pencilButton.style.display = 'block';
+                    }
+                    else {
+                        statusTxt.innerText = status_2;
+                        statusTxt.classList.remove('bg-danger');
+                        statusTxt.classList.add('bg-success');
+                        pencilButton.style.display = 'none';
+                    }
+                    usuarioTxt.innerText = user;
+                    telefoneTxt.innerText = telefone;
+                    setorTxt.innerText = setor;
+                    diaTxt.innerText = "".concat(dia, " - ").concat(hora);
+                    detalhesTxt.innerText = detalhes;
+                    if (resposta.trim() == "" || !resposta) {
+                        respostaTxt.innerText = "A equipe de TI ainda não comentou esse chamado.";
+                        diaRespostaTxt.style.display = "none";
+                    }
+                    else {
+                        respostaTxt.innerText = resposta;
+                        diaRespostaTxt.style.display = "block";
+                        diaRespostaTxt.innerText = "".concat(diaResposta, " - ").concat(horaResposta);
+                    }
+                    _a.label = 5;
+                case 5: return [3 /*break*/, 7];
+                case 6:
+                    error_5 = _a.sent();
+                    console.error("API com problemas!");
+                    return [3 /*break*/, 7];
+                case 7: return [2 /*return*/];
+            }
+        });
+    });
+}
+function alterarStatus(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var apiUrl, response;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    apiUrl = 'http://127.0.0.1/status/' + id;
+                    return [4 /*yield*/, fetch(apiUrl)];
+                case 1:
+                    response = _a.sent();
+                    if (response.status == 201) {
+                        console.log('Status alterado!');
+                    }
+                    location.reload(); //atualiza a página atual no navegador
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
 // // Envia para a página de edição
 // async function editaChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
 //   const urlEditar:string = `edicao.html?id=${id}&useremail=${userEmail}&logado=${logado}`
 //   window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
 // }
 // editarUsuario(cpf): Esta função é responsável por preencher um formulário de edição com os dados de um usuário existente. Ela faz uma solicitação à API para obter os dados do usuário com o CPF fornecido.
-function preenhcerEdicao(id, userEmail, logado) {
+function preencherEdicao(id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var apiUrl, response, data, email_chamado, setor_chamado, problema_chamado, detalhes_chamado, id_chamado, error_5;
+        var apiUrl, response, data, email_chamado, setor_chamado, problema_chamado, detalhes_chamado, id_chamado, error_6;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -460,7 +573,43 @@ function preenhcerEdicao(id, userEmail, logado) {
                     _a.label = 4;
                 case 4: return [3 /*break*/, 6];
                 case 5:
-                    error_5 = _a.sent();
+                    error_6 = _a.sent();
+                    console.error("API com problemas!");
+                    return [3 /*break*/, 6];
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
+function preencherResposta(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var apiUrl, response, data, setor_chamado, problema_chamado, detalhes_chamado, resposta_chamado, error_7;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    apiUrl = 'http://127.0.0.1/chamadoid/' + id;
+                    return [4 /*yield*/, fetch(apiUrl)];
+                case 1:
+                    response = _a.sent();
+                    if (!!response.ok) return [3 /*break*/, 2];
+                    alert('Chamado não encontrado!');
+                    return [3 /*break*/, 4];
+                case 2: return [4 /*yield*/, response.json()];
+                case 3:
+                    data = _a.sent();
+                    setor_chamado = data.setor;
+                    problema_chamado = data.problema;
+                    detalhes_chamado = data.detalhes;
+                    resposta_chamado = data.resposta;
+                    document.getElementById("setor").value = setor_chamado;
+                    document.getElementById("problema").value = problema_chamado;
+                    document.getElementById("detalhes").value = detalhes_chamado;
+                    document.getElementById('resposta').value = resposta_chamado;
+                    _a.label = 4;
+                case 4: return [3 /*break*/, 6];
+                case 5:
+                    error_7 = _a.sent();
                     console.error("API com problemas!");
                     return [3 /*break*/, 6];
                 case 6: return [2 /*return*/];
@@ -493,6 +642,44 @@ function alterarChamado(event, id, userEmail, logado) {
                     else {
                         alert('Falha ao alterar! Fale com o suporte');
                         urlEditar = "home.html?userEmail=".concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
+                        return [2 /*return*/, false];
+                    }
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function alterarResposta(event, id, userEmail, logado) {
+    return __awaiter(this, void 0, void 0, function () {
+        var apiUrl, formData, response, urlEditar, urlEditar, urlEditar;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    event.preventDefault();
+                    apiUrl = 'http://127.0.0.1:80/responder/' + id;
+                    formData = new FormData(document.getElementById('formulario'));
+                    return [4 /*yield*/, fetch(apiUrl, {
+                            method: 'PUT',
+                            body: formData
+                        })];
+                case 1:
+                    response = _a.sent();
+                    if (response.status == 201) {
+                        alert('Chamado alterado com sucesso!');
+                        urlEditar = "gestaoDetalhe.html?id=".concat(id, "&userEmail=").concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
+                        return [2 /*return*/, true];
+                    }
+                    else if (response.status == 400) {
+                        alert('Chamado já registrado!');
+                        urlEditar = "gestaoDetalhe.html?id=".concat(id, "&userEmail=").concat(userEmail, "&logado=").concat(logado);
+                        window.location.href = urlEditar;
+                        return [2 /*return*/, false];
+                    }
+                    else {
+                        alert('Falha ao alterar! Fale com o suporte.');
+                        urlEditar = "gestaoDetalhe.html?id=".concat(id, "&userEmail=").concat(userEmail, "&logado=").concat(logado);
                         window.location.href = urlEditar;
                         return [2 /*return*/, false];
                     }

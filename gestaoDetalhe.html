@@ -24,10 +24,10 @@
                 if (infos["logado"] != "true"){
                     window.location.href = "login.html"
                 } else{
-                    preencherDetalhe(infos['id'],infos["userEmail"],infos["logado"])
+                    preencherDetalheGestao(infos['id'],infos["logado"])
                 }
             } else {
-                alert('Parâmetro "Email do usuário" ou "Situação de login" não encontrado na URL.')
+                alert('Parâmetro "Situação de login" não encontrado na URL.')
             }
         }
     </script>
@@ -39,19 +39,18 @@
         </header>
         <main class="flex-fill flex-column justify-content-center align-items-center container-fluid">
             <div class="container border rounded">
-                <div id="buttons" class="flex-row justify-content-between m-3">
+                <div id="buttons" class="d-flex flex-row justify-content-between m-3">
                     <div class="d-flex flex-flow text-primary">
                         <i id="backButton" style="cursor: pointer" class="bi bi-arrow-left"></i>
                     </div>
-                    <div class="d-flex flex-row-reverse text-primary">
-                        <i id="trashButton" style="cursor: pointer;" class="bi bi-trash3 ms-3"></i>
+                    <div class="flex-row-reverse text-primary">
                         <i id="pencilButton" style="cursor: pointer;" class="bi bi-pencil-square me-3"></i>
                     </div>
                 </div>
                 <div class="row d-flex justify-content-between m-3">
                     <h1 id="problemaTxt" class="col-10 col-lg-8"></h1>
                     <div class="d-flex align-items-center w-auto">
-                        <p class="rounded-circle text-light p-3" id="statusTxt"></p>
+                        <p style="cursor: pointer" class="rounded-circle text-light p-3" id="statusTxt"></p>
                     </div>
                 </div>
                 <div class="row g-4 d-flex justify-content-between">
@@ -80,17 +79,17 @@
         const infos = obterNumeroDaURL()
         let pencilButton = document.getElementById("pencilButton")
         pencilButton.addEventListener('click',() => {
-            const urlEditar = `edicao.html?id=${infos['id']}&userEmail=${infos['userEmail']}&logado=${infos['logado']}`
+            const urlEditar = `gestaoResposta.html?id=${infos['id']}&userEmail=${infos['userEmail']}&logado=${infos['logado']}`
             window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
-        })
-        let trashButton = document.getElementById("trashButton")
-        trashButton.addEventListener('click',() => {
-            excluir(infos['id'],infos['userEmail'],infos['logado'])
         })
         let backButton = document.getElementById('backButton')
         backButton.addEventListener('click',() => {
-            const urlEditar = `home.html?userEmail=${infos['userEmail']}&logado=${infos['logado']}`
+            const urlEditar = `gestao.html?userEmail=${infos['userEmail']}&logado=${infos['logado']}`
             window.location.href = urlEditar
+        })
+        let statusTxt = document.getElementById("statusTxt")
+        statusTxt.addEventListener('click',() => {
+            alterarStatus(infos['id'])
         })
     </script>
 </body>
