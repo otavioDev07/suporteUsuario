@@ -2,7 +2,7 @@ let logado:boolean = false
 let loginEmail:string = ""
 // listarUsuariosGestao(): Esta função é responsável por fazer uma requisição à API para obter a lista de usuários cadastrados. Em seguida, ela popula uma tabela HTML com os dados retornados pela API, incluindo opções para editar, excluir e alterar o status de cada usuário.
 
-async function listarChamadosGestao():Promise<void> {
+async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
   const apiUrl:string = 'http://127.0.0.1:80/chamado/getall'
   const response:Response = await fetch(apiUrl)
@@ -13,20 +13,19 @@ async function listarChamadosGestao():Promise<void> {
     const data:any = await response.json()
     listaChamados.innerHTML = ""
     for (let item of data) {  
-      listaChamados.innerHTML += `<div class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
-      const cardResposta:any = document.getElementById("cardResposta")
-      if(item.resposta.trim() != ""){
-        cardResposta.innerHTML += `
-          <hr>
-          <h5 class="card-title">Resposta</h5>
-          <p class="card-text">${item.resposta}</p>
-        `
-      }
+      listaChamados.innerHTML += `<div style="cursor:pointer" class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p></div></div>` //adiciona card com informações do chamado
     }
+    const cards = document.querySelectorAll('.card')
+      cards.forEach((card, index) => {
+        card.addEventListener('click',function(){
+          const item = data[index]
+          window.location.href = `gestaoDetalhe.html?id=${item.id}&userEmail=${email}&logado=${login}`
+        }) 
+      })
   }
 }
 
-async function listarChamadosUser(email:string):Promise<void> {
+async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
   const apiUrl:string = 'http://127.0.0.1:80/chamado/' + email
   const response:Response = await fetch(apiUrl)
@@ -37,18 +36,18 @@ async function listarChamadosUser(email:string):Promise<void> {
     const data:any = await response.json()
     listaChamados.innerHTML = ""
     for (let item of data) {  
-      listaChamados.innerHTML += `<div onclick="editaChamado(${item.id})" style="cursor: pointer" class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p><div id="cardResposta"></div></div></div>` //adiciona card com informações do chamado
-      const cardResposta:any = document.getElementById("cardResposta")
-      if(item.resposta.trim() != ""){
-        cardResposta.innerHTML += `
-          <hr>
-          <h5 class="card-title">Resposta</h5>
-          <p class="card-text">${item.resposta}</p>
-        `
-      }
+      listaChamados.innerHTML += `<div style="cursor: pointer" class="card col-12 col-lg-3 mx-2"><div class="card-body"><h5 id="cardProblema" class="card-title">${item.problema}</h5><div class="d-flex justify-content-between"><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.user}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.telefone}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.setor}</h6><h6 class="card-subtitle mb-2 text-body-secondary" style="font-size: 8px;">${item.dia} - ${item.hora}</h6></div><p class="card-text">${item.detalhes}</p></div></div>` //adiciona card com informações do chamado 
     }
+    const cards = document.querySelectorAll('.card')
+      cards.forEach((card, index) => {
+        card.addEventListener('click',function(){
+          const item = data[index]
+          window.location.href = `detalhe.html?id=${item.id}&userEmail=${email}&logado=${login}`
+        }) 
+      })
   }
 }
+
 
   // enviarDados(event): Esta função é chamada quando os dados de um novo usuário são enviados por meio de um formulário. Ela envia os dados para a API através de uma solicitação POST para cadastrar o novo usuário.
   
@@ -96,6 +95,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     const Getresponse:Response = await fetch(apiUrl)
     if (!Getresponse.ok) {
       alert('Usuário não encontrado!')
+      window.location.href = "login.html"
     }
     else {
       const data:any = await Getresponse.json()
@@ -126,17 +126,12 @@ async function listarChamadosUser(email:string):Promise<void> {
 
   async function enviarChamadoAdm(event:any):Promise<boolean> {
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
-    const dia:any = document.getElementById("dia")
-    const hora:any = document.getElementById("hora")
-    const date = new Date()
-    dia.value = date.toLocaleDateString()
-    hora.value = date.toLocaleTimeString()
 
     const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
     const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
       method: 'POST',
       body: formData
-    })
+    }) 
     
     if (response.status == 201) {
       alert('Chamado registrado com sucesso!')
@@ -172,7 +167,8 @@ async function listarChamadosUser(email:string):Promise<void> {
   }
   
   // verificarUsuario(): Essa função verifica se um usuário com o CPF fornecido está cadastrado no sistema. Ela faz uma solicitação à API para obter informações sobre o usuário e exibe uma mensagem dependendo do status do usuário (ativo ou bloqueado).
-  async function verificarUsuario():Promise<void> {
+  async function verificarUsuario(event:any):Promise<void> {
+    event.preventDefault()
     try {
       const adm:any = document.getElementById("adm").value
       const formData:FormData = new FormData(document.getElementById('formulario'))
@@ -182,6 +178,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     })
       if (!response.ok) {
         alert('Usuário não encontrado!')
+        window.location.href = "login.hmtl"
       }
       else {
         const data:Response = await response.json()
@@ -215,6 +212,7 @@ async function listarChamadosUser(email:string):Promise<void> {
     
         if (!response.ok) {
           alert('Usuário não encontrado!')
+          window.location.href = "login.html"
         }
         else {
           const data:any = await response.json()
@@ -229,18 +227,178 @@ async function listarChamadosUser(email:string):Promise<void> {
     }
   }
 
-  // Envia para a página de edição
-  async function editaChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
-    const urlEditar:string = `edicao.html?id=${id}+useremail=${userEmail}+logado=${logado}`
-    window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
+  // Preenche a página do Chamado
+  async function preencherDetalhe(id:string, userEmail:string,logado:boolean):Promise<void>{
+    try {
+      if (logado==false){
+        window.location.href = "login.html"
+      } else{
+        const buttons:any = document.getElementById('buttons')
+        const pencilButton:any = document.getElementById('pencilButton')
+        const problemaTxt:any = document.getElementById("problemaTxt")
+        const statusTxt:any = document.getElementById('statusTxt')
+        const usuarioTxt:any = document.getElementById("usuarioTxt")
+        const telefoneTxt:any = document.getElementById("telefoneTxt")
+        const setorTxt:any = document.getElementById('setorTxt')
+        const diaTxt:any = document.getElementById('diaTxt')
+        const detalhesTxt:any = document.getElementById('detalhesTxt')
+        const diaRespostaTxt:any = document.getElementById('diaRespostaTxt')
+        const respostaTxt:any = document.getElementById('repostaTxt')
+        const apiUrl:string = 'http://127.0.0.1:80/chamadoid/' + id
+        const response:Response = await fetch(apiUrl)
+        if (!response.ok) {
+          alert('Chamado não encontrado!')
+        }
+        else {
+          const data:any = await response.json()
+          const user:any = data.user
+          const email:any = data.email
+          const telefone:any = data.telefone
+          const dia:any = data.dia
+          const hora:any = data.hora
+          const diaResposta:any = data.diaResposta
+          const horaResposta:any = data.horaResposta
+          const setor:any = data.setor
+          const problema:any = data.problema
+          const detalhes:any = data.detalhes
+          const resposta:any = data.resposta
+          const status:any = data.status
+    
+          problemaTxt.innerText = problema
+          if (status == "Em Aberto"){
+            statusTxt.innerText = status
+            statusTxt.classList.remove('bg-success')
+            statusTxt.classList.add('bg-danger')
+          } else{
+            statusTxt.innerText = status
+            statusTxt.classList.remove('bg-danger')
+            statusTxt.classList.add('bg-success')
+          }
+          
+          usuarioTxt.innerText = user
+          telefoneTxt.innerText = telefone
+          setorTxt.innerText = setor
+          diaTxt.innerText = `${dia} - ${hora}`
+          detalhesTxt.innerText = detalhes
+          if (resposta.trim()=="" || !resposta){
+            respostaTxt.innerText = "A equipe de TI ainda não comentou esse chamado."
+            diaRespostaTxt.style.display = 'none'
+          } else{
+            respostaTxt.innerText = resposta
+            diaRespostaTxt.style.display = "block"
+            diaRespostaTxt.innerText = `${diaResposta} - ${horaResposta}`
+          }
+          if (userEmail == email){
+            buttons.style.display = 'flex'
+            if (status == "Fechado"){
+              pencilButton.style.display = 'none'
+            } else{
+              pencilButton.style.display = 'block'
+            }
+          } else{
+            buttons.style.display = 'none'
+          }
+        }
+      }
+    }
+    catch (error) {
+      console.error("API com problemas!")
+    }
   }
   
+  // Preenche a página do Chamado
+  async function preencherDetalheGestao(id:string, logado:boolean):Promise<void>{
+    try {
+      if (logado==false){
+        window.location.href = "login.html"
+      } else{
+        const pencilButton:any = document.getElementById('pencilButton')
+        const problemaTxt:any = document.getElementById("problemaTxt")
+        const statusTxt:any = document.getElementById('statusTxt')
+        const usuarioTxt:any = document.getElementById("usuarioTxt")
+        const telefoneTxt:any = document.getElementById("telefoneTxt")
+        const setorTxt:any = document.getElementById('setorTxt')
+        const diaTxt:any = document.getElementById('diaTxt')
+        const detalhesTxt:any = document.getElementById('detalhesTxt')
+        const diaRespostaTxt:any = document.getElementById('diaRespostaTxt')
+        const respostaTxt:any = document.getElementById('repostaTxt')
+        const apiUrl:string = 'http://127.0.0.1:80/chamadoid/' + id
+        const response:Response = await fetch(apiUrl)
+        if (!response.ok) {
+          alert('Chamado não encontrado!')
+        }
+        else {
+          const data:any = await response.json()
+          const user:any = data.user
+          const email:any = data.email
+          const telefone:any = data.telefone
+          const dia:any = data.dia
+          const hora:any = data.hora
+          const diaResposta:any = data.diaResposta
+          const horaResposta:any = data.horaResposta
+          const setor:any = data.setor
+          const problema:any = data.problema
+          const detalhes:any = data.detalhes
+          const resposta:any = data.resposta
+          const status:any = data.status
+    
+          problemaTxt.innerText = problema
+          if (status == "Em Aberto"){
+            statusTxt.innerText = status
+            statusTxt.classList.remove('bg-success')
+            statusTxt.classList.add('bg-danger')
+            pencilButton.style.display = 'block'
+          } else{
+            statusTxt.innerText = status
+            statusTxt.classList.remove('bg-danger')
+            statusTxt.classList.add('bg-success')
+            pencilButton.style.display = 'none'
+          }
+          
+          usuarioTxt.innerText = user
+          telefoneTxt.innerText = telefone
+          setorTxt.innerText = setor
+          diaTxt.innerText = `${dia} - ${hora}`
+          detalhesTxt.innerText = detalhes
+          if (resposta.trim()=="" || !resposta){
+            respostaTxt.innerText = "A equipe de TI ainda não comentou esse chamado."
+            diaRespostaTxt.style.display = "none"
+          } else{
+            respostaTxt.innerText = resposta
+            diaRespostaTxt.style.display = "block"
+            diaRespostaTxt.innerText = `${diaResposta} - ${horaResposta}`
+          }
+        }
+      }
+    }
+    catch (error) {
+      console.error("API com problemas!")
+    }
+  }
+
+  async function alterarStatus(id:any):Promise<void> {
+    const apiUrl = 'http://127.0.0.1/status/' + id
+    const response = await fetch(apiUrl)
+    if (response.status == 201) {
+      console.log('Status alterado!')
+    }
+    location.reload() //atualiza a página atual no navegador
+  }
+
+
+
+  // // Envia para a página de edição
+  // async function editaChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
+  //   const urlEditar:string = `edicao.html?id=${id}&useremail=${userEmail}&logado=${logado}`
+  //   window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
+  // }
+
 
   // editarUsuario(cpf): Esta função é responsável por preencher um formulário de edição com os dados de um usuário existente. Ela faz uma solicitação à API para obter os dados do usuário com o CPF fornecido.
   
-  async function editarChamado(id:string,userEmail:string,logado:boolean):Promise<void> {
+  async function preencherEdicao(id:string,userEmail:string,logado:boolean):Promise<void> {
     try {
-      const apiUrl:string = 'http://127.0.0.1/chamado/' + id
+      const apiUrl:string = 'http://127.0.0.1/chamadoid/' + id
       const response:Response = await fetch(apiUrl)
   
       if (!response.ok) {
@@ -263,13 +421,38 @@ async function listarChamadosUser(email:string):Promise<void> {
       console.error("API com problemas!")
     }
   }
+
+  async function preencherResposta(id:string):Promise<void> {
+    try {
+      const apiUrl:string = 'http://127.0.0.1/chamadoid/' + id
+      const response:Response = await fetch(apiUrl)
+  
+      if (!response.ok) {
+        alert('Chamado não encontrado!')
+      }
+      else {
+        const data:any = await response.json()
+        const setor_chamado:any = data.setor
+        const problema_chamado:any = data.problema
+        const detalhes_chamado:any = data.detalhes
+        const resposta_chamado:any = data.resposta
+  
+        document.getElementById("setor").value = setor_chamado
+        document.getElementById("problema").value = problema_chamado
+        document.getElementById("detalhes").value = detalhes_chamado
+        document.getElementById('resposta').value = resposta_chamado
+      }
+    }
+    catch (error) {
+      console.error("API com problemas!")
+    }
+  }
   
   // alterarDados(event): Esta função é chamada quando os dados de um usuário são alterados em um formulário de edição. Ela envia os dados atualizados para a API através de uma solicitação PUT para atualizar o usuário.
   
-  async function alterarChamados(event:any):Promise<boolean>{
+  async function alterarChamado(event:any,id:string,userEmail:string,logado:string):Promise<boolean>{
     event.preventDefault() 
   
-    const id:any = document.getElementById("id").value
     const apiUrl:string = 'http://127.0.0.1:80/editar/' + id
     const formData:FormData = new FormData(document.getElementById('formulario'))
     const response:Response = await fetch(apiUrl, {
@@ -278,27 +461,61 @@ async function listarChamadosUser(email:string):Promise<void> {
     })
   
     if (response.status == 201) {
-      alert('Usuário alterado com sucesso!')
-      window.location.href = "gestao.html"
+      alert('Chamado alterado com sucesso!')
+      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
       return true
     } else {
       alert('Falha ao alterar! Fale com o suporte')
+      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
       return false
+    }
+  }
+
+  async function alterarResposta(event:any,id:string,userEmail:string,logado:string):Promise<boolean>{
+    event.preventDefault() 
+  
+    const apiUrl:string = 'http://127.0.0.1:80/responder/' + id
+    const formData:FormData = new FormData(document.getElementById('formulario'))
+    const response:Response = await fetch(apiUrl, {
+      method: 'PUT',
+      body: formData
+    })
+  
+    if (response.status == 201) {
+      alert('Chamado alterado com sucesso!')
+      const urlEditar:string = `gestaoDetalhe.html?id=${id}&userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
+      return true
+    } else if(response.status == 400){
+      alert('Chamado já registrado!')
+      const urlEditar:string = `gestaoDetalhe.html?id=${id}&userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
+      return false
+    } else {
+        alert('Falha ao alterar! Fale com o suporte.')
+        const urlEditar:string = `gestaoDetalhe.html?id=${id}&userEmail=${userEmail}&logado=${logado}`
+        window.location.href = urlEditar
+        return false
     }
   }
   
   // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
-  async function excluir(id){
-    const apiUrl = 'http://127.0.0.1:80/deletar/' + id
-    const response = await fetch(apiUrl,{method:'DELETE'})
+  async function excluir(id:string, userEmail:string,logado:boolean):Promise<boolean>{
+    const apiUrl:string = 'http://127.0.0.1:80/deletar/' + id
+    const response:Response = await fetch(apiUrl,{method:'DELETE'})
   
     if (response.status == 200) {
-      alert('Usuário deletado com sucesso!')
-      window.location.href = "gestao.html"
+      alert('Chamado deletado com sucesso!')
+      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
       return true
     } else {
       alert('Falha ao excluir! Fale com o suporte')
+      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+      window.location.href = urlEditar
       return false
     }
   }

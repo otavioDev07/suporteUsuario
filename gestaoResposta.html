@@ -24,7 +24,7 @@
                     alert(infos['logado'])
                     window.location.href = "login.html"
                 } else{
-                    preencherEdicao(infos['id'],infos["userEmail"],infos["logado"])
+                    preencherResposta(infos['id'],infos["userEmail"],infos["logado"])
                 }
             } else {
                 alert('Parâmetro "Email do usuário" ou "Situação de login" não encontrado na URL.')
@@ -45,18 +45,22 @@
                         <h1>Editar chamado</h1>
                     </div>
                     <div class="form-floating mb-3 col-12">
-                        <input class="form-control" placeholder=""  type="text" id="setor" name="setor" required>
+                        <input class="form-control" placeholder=""  type="text" id="setor" name="setor" disabled>
                         <label class="ms-2" for="setor">Setor:</label>
                     </div>
                     <div class="form-floating mb-3 col-12">
-                        <input class="form-control" placeholder=""  type="text" id="problema" name="problema" required>
-                        <label class="ms-2" for="problema">Problema:</label>
+                        <input class="form-control" placeholder=""  type="text" id="problema" name="problema" disabled>
+                        <label class="ms-2" for="email">Problema:</label>
                     </div>
                     <div class="form-floating mb-3 col-12">
-                        <textarea class="form-control" name="detalhes" id="detalhes" cols="30" rows="100" style="resize: none;" required></textarea>
+                        <textarea class="form-control" name="detalhes" id="detalhes" cols="30" rows="100" style="resize: none;" disabled></textarea>
                         <label class="ms-2" for="detalhes">Detalhes:</label>
                     </div>
-                    <button id="alterarbtn" type="submit" class="btn btn-primary m-3">Alterar</button>
+                    <div class="form-floating mb-3 col-12">
+                        <textarea class="form-control" name="resposta" id="resposta" cols="30" rows="100" style="resize: none;" required></textarea>
+                        <label class="ms-2" for="resposta">Comentário:</label>
+                    </div>
+                    <button id="alterarbtn" type="submit" class="btn btn-primary m-3">Responder</button>
                 </form>
             </section>
         </main>
@@ -67,7 +71,7 @@
         const infos = obterNumeroDaURL()
         let alterarbtn = document.getElementById("alterarbtn")
         alterarbtn.addEventListener('click',() => {
-            alterarChamado(event,infos['id'],infos['userEmail'],infos['logado'])
+            alterarResposta(event,infos['id'],infos['userEmail'],infos['logado'])
         })
     </script>
 </body>

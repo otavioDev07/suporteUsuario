@@ -1,11 +1,10 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
-import datetime
-
+from datetime import datetime, date
 app = Flask(__name__)
 CORS(app)
 
-usuarios = [{'user':'Ádillan','email':'adillan.soares@gmail.com','telefone':'15997357821','senha':'Adillan#123'}]
+usuarios = [{"user":"Ádillan","email":"adillan.soares@gmail.com","telefone":"15997805403","senha":"Adillan#123"}]
 chamados = []
 
 # Rota para listar todos os usuários
@@ -41,11 +40,11 @@ def get_chamado(email):
   else:
       return jsonify({"error": "Nenhum chamado encontrado para este cliente"}), 404
 
-# Rota para puxar chamado edição
-@app.route('/chamado/<id>', methods=['GET'])
-def get_chamadoEdicao():
+# Rota para pegar chamado pelo seu id
+@app.route('/chamadoid/<id>', methods=['GET'])
+def get_chamadoEdicao(id):
   for chamado in chamados:
-    if chamado['id'] == id:
+    if chamado['id'] == int(id):
       return jsonify(chamado)
   return jsonify({"error": "Chamado não encontrado"}), 404
 
@@ -116,17 +115,22 @@ def add_usuario():
 # Rota para adicionar um novo chamado
 @app.route('/novochamado', methods=['POST'])
 def add_chamado():
-    # Verifica se todos os campos necessários estão presentes no formulário
-    required_fields = ['user', 'email', 'telefone', 'dia', 'hora', 'setor', 'problema', 'detalhes', 'resposta','status']
-    for field in required_fields:
-        if field not in request.form:
-            return jsonify({'message': f'Campo "{field}" ausente no formulário'}), 400
+    #Obtenção da hora atual
+    agora = datetime.now()
+    hora = agora.hour
+    minuto = agora.minute
+
+    #Formatação dia 
+    hoje = date.today()
+    data_formatada = hoje.strftime("%d/%m/%Y")
 
     nome_chamado = request.form['user']
     email_chamado = request.form['email']
     telefone_chamado = request.form['telefone']
-    dia_chamado = request.form['dia']
-    hora_chamado = request.form['hora']
+    dia_chamado = data_formatada
+    hora_chamado = f'{hora}:{minuto}'
+    dia_resposta = ""
+    hora_resposta = ""
     setor_chamado = request.form['setor']
     problema_chamado = request.form['problema']
     detalhes_chamado = request.form['detalhes']
@@ -157,34 +161,73 @@ def add_chamado():
 # Rota para alterar status do usuário
 @app.route('/status/<int:id>')
 def edt_status(id):
-  for usuario in usuarios:
-    if usuario['id'] == id:
-      if usuario['ativo'] == True:
-        usuario['ativo'] = False
+  for chamado in chamados:
+    if chamado['id'] == id:
+      if chamado['status'] == "Em Aberto":
+        chamado['status'] = "Fechado"
       else:
-        usuario['ativo'] = True
+        chamado['status'] = "Em Aberto"
   return jsonify({"message": "Status alterado"}), 201    
 
-# # Rota para alterar informações do usuário
-# @app.route('/editar/<int:id>', methods=['PUT'])
-# def alterar(id):
-#   nome_usuario = request.form['nome']
-#   cpf_usuario = int(request.form['cpf'])
-#   for usuario in usuarios:
-#     if usuario['id'] == id:
-#       usuario['nome']=nome_usuario
-#       usuario['cpf']=cpf_usuario
-#   return jsonify({"message": "Alterações realizadas"}), 201
+# Rota para editar o chamado
+@app.route('/editar/<int:id>', methods=['PUT'])
+def alterar(id):
+  #Obtenção da hora atual
+  agora = datetime.now()
+  hora = agora.hour
+  minuto = agora.minute
 
-# # Rota para excluir um usuário
-# @app.route('/deletar/<int:id>', methods=['DELETE'])
-# def deletar_usuario(id):
-#   for usuario in usuarios:
-#     if usuario['id'] == id:
-#       usuarios.remove(usuario)
-#       return jsonify({'message': 'Usuário deletado com sucesso'}), 200
-#   else:
-#     return jsonify({'error': 'Usuário não encontrado'}), 404
+  #Formatação dia 
+  hoje = date.today()
+  data_formatada = hoje.strftime("%d/%m/%Y")
+
+  dia_chamado = data_formatada
+  hora_chamado = f'{hora}:{minuto}'
+  setor_chamado = request.form['setor']
+  problema_chamado = request.form['problema']
+  detalhes_chamado = request.form['detalhes']
+  for chamado in chamados:
+    if chamado['id'] == id:
+      chamado['setor'] = setor_chamado
+      chamado['problema'] = problema_chamado
+      chamado['detalhes'] = detalhes_chamado
+      chamado['dia'] = dia_chamado
+      chamado['hora'] = hora_chamado
+  return jsonify({"message": "Alterações realizadas"}), 201
+
+# Rota para responder o chamado
+@app.route('/responder/<int:id>', methods=['PUT'])
+def responder(id):
+  #Obtenção da hora atual
+  agora = datetime.now()
+  hora = agora.hour
+  minuto = agora.minute
+
+  #Formatação dia 
+  hoje = date.today()
+  data_formatada = hoje.strftime("%d/%m/%Y")
+
+  dia_resposta = data_formatada
+  hora_resposta = f'{hora}:{minuto}'
+  resposta_chamado = request.form['resposta']
+  for chamado in chamados:
+    if chamado['id'] == id:
+      if chamado['resposta'] == resposta_chamado:
+         return jsonify({'message':'Comentário já registrado'}), 400
+      chamado['resposta'] = resposta_chamado
+      chamado['diaResposta'] = dia_resposta
+      chamado['horaResposta'] = hora_resposta
+  return jsonify({"message": "Comentário registrado"}), 201
+
+# Rota para excluir um chamado
+@app.route('/deletar/<int:id>', methods=['DELETE'])
+def deletar_chamado(id):
+  for chamado in chamados:
+    if chamado['id'] == id:
+      chamados.remove(chamado)
+      return jsonify({'message': 'Chamado deletado com sucesso'}), 200
+  else:
+    return jsonify({'error': 'Chamado não encontrado'}), 404
           
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=80)

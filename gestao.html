@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="style.css">
     <title>Suporte de TI</title>
     <script>
@@ -24,7 +25,7 @@
                     window.location.href = "login.html"
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])
-                    listarChamadosGestao()
+                    listarChamadosGestao(infos["userEmail"],infos["logado"])
                     document.getElementById("status").value = "Em Aberto"
                     document.getElementById("resposta").value = ""
                 }
@@ -37,8 +38,9 @@
 </head>
 <body>
     <body style="min-height: 100vh; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
-        <header class="text-center bg-secondary">
-            <h1 id="username" class="text-light"></h1>
+        <header class="d-flex justify-content-center align-items-center text-center bg-secondary">
+            <i id="sairbtn" class="bi bi-box-arrow-left text-light" style="cursor: pointer; width: 30px; height: 30px"></i>
+            <h1 id="username" class="text-light ms-5"></h1>
         </header>
         <main class="d-flex flex-fill flex-column justify-content-center align-items-center container-fluid">
             <section id="formSection" class="d-flex flex-fill flex-column justify-content-center align-items-center container-fluid">
@@ -92,7 +94,12 @@
             </section>
         </main>
         <footer></footer>
-
+    <script>
+        let sairbtn = document.getElementById("sairbtn")
+        sairbtn.addEventListener('click',() => {
+            window.location.href = "login.html"
+        })
+    </script>
     <script src="build/script.js"></script>
 </body>
 </html>
