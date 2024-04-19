@@ -181,7 +181,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
         window.location.href = "login.hmtl"
       }
       else {
-        const data:Response = await response.json()
+        const data:any = await response.json()
         logado = true
         loginEmail = data.email
   
