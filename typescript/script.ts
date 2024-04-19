@@ -12,7 +12,7 @@ let loginEmail:string = ""
     });
 
     let responseData:Response // Declaração da variável responseData
-    
+    // Possível alteração let responseData: { message: string };
     try {
         responseData = await response.json(); // Extrai o corpo da resposta JSON
     } catch (error) {
