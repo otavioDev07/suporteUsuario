@@ -21,7 +21,6 @@
             const infos = obterNumeroDaURL()
             if (infos) {
                 if (infos["logado"] != "true"){
-                    alert("Está dando erro")
                     window.location.href = "../../login.html"
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])
