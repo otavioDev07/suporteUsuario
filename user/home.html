@@ -25,7 +25,7 @@
                     window.location.href = "../../login.html"
                 } else{
                     preencherHome(infos["userEmail"],infos["logado"])
-                    listarChamadosUser(infos["userEmail"])
+                    listarChamadosUser(infos["userEmail"],infos["logado"])
                     document.getElementById("email").value = infos["userEmail"]
                     document.getElementById("status").value = "Em Aberto"
                     document.getElementById("resposta").value = ""
@@ -90,7 +90,7 @@
                                         <label class="ms-2" for="detalhes">Detalhes:</label>
                                     </div>        
                                    <div class="input-field">
-                                        <input type="submit" class="submit" value="Enviar">
+                                        <input id="cadastrarbtn" onclick="enviarChamado(event)" type="submit" class="submit" value="Enviar">
                                    </div> 
                                 </div>  
                             </div>

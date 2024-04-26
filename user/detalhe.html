@@ -22,7 +22,7 @@
             const infos = obterNumeroDaURL()
             if (infos) {
                 if (infos["logado"] != "true"){
-                    window.location.href = "login.html"
+                    window.location.href = "../../login.html"
                 } else{
                     preencherDetalhe(infos['id'],infos["userEmail"],infos["logado"])
                 }
