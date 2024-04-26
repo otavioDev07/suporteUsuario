@@ -67,7 +67,7 @@ let loginEmail:string = ""
     try {
       const adm:any = document.getElementById("adm").value
       const formData:FormData = new FormData(document.getElementById('formulario'))
-      const response:Response = await fetch('http://127.0.0.1:80/login', {
+      const response:Response = await fetch('https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/login', {
       method: 'POST',
       body: formData
     })
