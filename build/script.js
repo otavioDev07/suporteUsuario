@@ -39,31 +39,39 @@ var loginEmail = "";
 // enviarDados(event): Esta função é chamada quando os dados de um novo usuário são enviados por meio de um formulário. Ela envia os dados para a API através de uma solicitação POST para cadastrar o novo usuário.
 function enviarDados(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var formData, response, responseData // Declaração da variável responseData
+        var user, email, telefone, formData, response, responseData // Declaração da variável responseData
         , error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
+                    user = document.getElementById("user");
+                    email = document.getElementById("email");
+                    telefone = document.getElementById("telefone");
+                    if (!(user.value.trim() == "" || email.value.trim() == "" || telefone.value.trim() == "")) return [3 /*break*/, 1];
+                    alert("Não deixe campos em branco!");
+                    return [3 /*break*/, 7];
+                case 1:
                     formData = new FormData(document.getElementById('formulario'));
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/novo', {
                             method: 'POST',
                             body: formData
                         })];
-                case 1:
-                    response = _a.sent();
-                    _a.label = 2;
                 case 2:
-                    _a.trys.push([2, 4, , 5]);
-                    return [4 /*yield*/, response.json()];
+                    response = _a.sent();
+                    responseData = void 0;
+                    _a.label = 3;
                 case 3:
-                    responseData = _a.sent(); // Extrai o corpo da resposta JSON
-                    return [3 /*break*/, 5];
+                    _a.trys.push([3, 5, , 6]);
+                    return [4 /*yield*/, response.json()];
                 case 4:
+                    responseData = _a.sent(); // Extrai o corpo da resposta JSON
+                    return [3 /*break*/, 6];
+                case 5:
                     error_1 = _a.sent();
                     console.error('Erro ao processar a resposta JSON:', error_1);
                     return [2 /*return*/, false];
-                case 5:
+                case 6:
                     if (response.status === 201) {
                         alert('Usuário cadastrado com sucesso!');
                         window.location.href = "login.html";
@@ -81,7 +89,8 @@ function enviarDados(event) {
                         alert('Falha ao cadastrar! Fale com o suporte');
                         return [2 /*return*/, false];
                     }
-                    return [2 /*return*/];
+                    _a.label = 7;
+                case 7: return [2 /*return*/];
             }
         });
     });

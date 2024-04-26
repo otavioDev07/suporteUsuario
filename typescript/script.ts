@@ -4,35 +4,41 @@ let loginEmail:string = ""
   
   async function enviarDados(event:any): Promise<boolean> {
     event.preventDefault();
+    const user:any = document.getElementById("user")
+    const email:any = document.getElementById("email")
+    const telefone:any = document.getElementById("telefone")
+    if (user.value.trim() == "" || email.value.trim() == "" || telefone.value.trim() == ""){
+      alert("Não deixe campos em branco!")
+    } else{
+        const formData: FormData = new FormData(document.getElementById('formulario'));
+        const response: Response = await fetch('http://127.0.0.1:80/novo', {
+            method: 'POST',
+            body: formData
+        });
     
-    const formData: FormData = new FormData(document.getElementById('formulario'));
-    const response: Response = await fetch('http://127.0.0.1:80/novo', {
-        method: 'POST',
-        body: formData
-    });
-
-    let responseData:Response // Declaração da variável responseData
-    // Possível alteração let responseData: { message: string };
-    try {
-        responseData = await response.json(); // Extrai o corpo da resposta JSON
-    } catch (error) {
-        console.error('Erro ao processar a resposta JSON:', error)
-        return false
-    }
-
-    if (response.status === 201) {
-        alert('Usuário cadastrado com sucesso!')
-        window.location.href = "login.html"
-        return true;
-    } else if (response.status === 409) {
-        alert('Usuário já tem cadastro!')
-        return false;
-    } else if (response.status === 400) { // Se o status for 400, exibe a mensagem retornada pelo servidor
-        alert(responseData.message) // Exibe a mensagem retornada pelo servidor
-        return false
-    } else {
-        alert('Falha ao cadastrar! Fale com o suporte')
-        return false
+        let responseData:Response // Declaração da variável responseData
+        // Possível alteração let responseData: { message: string };
+        try {
+            responseData = await response.json(); // Extrai o corpo da resposta JSON
+        } catch (error) {
+            console.error('Erro ao processar a resposta JSON:', error)
+            return false
+        }
+    
+        if (response.status === 201) {
+            alert('Usuário cadastrado com sucesso!')
+            window.location.href = "login.html"
+            return true;
+        } else if (response.status === 409) {
+            alert('Usuário já tem cadastro!')
+            return false;
+        } else if (response.status === 400) { // Se o status for 400, exibe a mensagem retornada pelo servidor
+            alert(responseData.message) // Exibe a mensagem retornada pelo servidor
+            return false
+        } else {
+            alert('Falha ao cadastrar! Fale com o suporte')
+            return false
+        }
     }
 }
   
