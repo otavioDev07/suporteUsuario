@@ -2,7 +2,7 @@
 
 async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
-  const apiUrl:string = 'http://127.0.0.1:80/chamado/getall'
+  const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamado/getall'
   const response:Response = await fetch(apiUrl)
   if (!response.ok) {
     listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>"
@@ -27,7 +27,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
 
     const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
-    const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
+    const response:Response = await fetch('https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/novochamado', {
       method: 'POST',
       body: formData
     }) 
@@ -51,7 +51,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
         window.location.href = "../../login.html"
       } else{
         const username:any = document.getElementById("username")
-        const apiUrl:string = 'http://127.0.0.1:80/' + userEmail
+        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + userEmail
         const response:Response = await fetch(apiUrl)
     
         if (!response.ok) {
@@ -87,7 +87,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
         const detalhesTxt:any = document.getElementById('detalhesTxt')
         const diaRespostaTxt:any = document.getElementById('diaRespostaTxt')
         const respostaTxt:any = document.getElementById('repostaTxt')
-        const apiUrl:string = 'http://127.0.0.1:80/chamadoid/' + id
+        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
         const response:Response = await fetch(apiUrl)
         if (!response.ok) {
           alert('Chamado não encontrado!')
@@ -142,7 +142,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
   }
 
   async function alterarStatus(id:any):Promise<void> {
-    const apiUrl = 'http://127.0.0.1/status/' + id
+    const apiUrl = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/status/' + id
     const response = await fetch(apiUrl)
     if (response.status == 201) {
       console.log('Status alterado!')
@@ -161,7 +161,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
 
   async function preencherResposta(id:string):Promise<void> {
     try {
-      const apiUrl:string = 'http://127.0.0.1/chamadoid/' + id
+      const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
       const response:Response = await fetch(apiUrl)
   
       if (!response.ok) {
@@ -189,7 +189,7 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
   async function alterarResposta(event:any,id:string,userEmail:string,logado:string):Promise<boolean>{
     event.preventDefault() 
   
-    const apiUrl:string = 'http://127.0.0.1:80/responder/' + id
+    const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/responder/' + id
     const formData:FormData = new FormData(document.getElementById('formulario'))
     const response:Response = await fetch(apiUrl, {
       method: 'PUT',

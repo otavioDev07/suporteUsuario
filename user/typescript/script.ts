@@ -1,6 +1,6 @@
 async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
-  const apiUrl:string = 'http://127.0.0.1:80/chamado/' + email
+  const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + email
   const response:Response = await fetch(apiUrl)
   if (!response.ok) {
     listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>"
@@ -25,7 +25,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
     const user:any = document.getElementById("user")
     const email:any = document.getElementById("email")
     const telefone:any = document.getElementById("telefone")
-    const apiUrl:string = 'http://127.0.0.1:80/' + email.value
+    const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + email.value
     const Getresponse:Response = await fetch(apiUrl)
     if (!Getresponse.ok) {
       alert('Usuário não encontrado!')
@@ -40,7 +40,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
     }
     
     const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
-    const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
+    const response:Response = await fetch('https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/novochamado', {
       method: 'POST',
       body: formData
     })
@@ -64,7 +64,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
         window.location.href = "../../login.html"
       } else{
         const username:any = document.getElementById("username")
-        const apiUrl:string = 'http://127.0.0.1:80/' + userEmail
+        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + userEmail
         const response:Response = await fetch(apiUrl)
     
         if (!response.ok) {
@@ -101,7 +101,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
         const detalhesTxt:any = document.getElementById('detalhesTxt')
         const diaRespostaTxt:any = document.getElementById('diaRespostaTxt')
         const respostaTxt:any = document.getElementById('repostaTxt')
-        const apiUrl:string = 'http://127.0.0.1:80/chamadoid/' + id
+        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
         const response:Response = await fetch(apiUrl)
         if (!response.ok) {
           alert('Chamado não encontrado!')
@@ -168,7 +168,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   
   async function preencherEdicao(id:string,userEmail:string,logado:boolean):Promise<void> {
     try {
-      const apiUrl:string = 'http://127.0.0.1/chamadoid/' + id
+      const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
       const response:Response = await fetch(apiUrl)
   
       if (!response.ok) {
@@ -198,7 +198,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   async function alterarChamado(event:any,id:string,userEmail:string,logado:string):Promise<boolean>{
     event.preventDefault() 
   
-    const apiUrl:string = 'http://127.0.0.1:80/editar/' + id
+    const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/editar/' + id
     const formData:FormData = new FormData(document.getElementById('formulario'))
     const response:Response = await fetch(apiUrl, {
       method: 'PUT',
@@ -221,7 +221,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
   async function excluir(id:string, userEmail:string,logado:boolean):Promise<boolean>{
-    const apiUrl:string = 'http://127.0.0.1:80/deletar/' + id
+    const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/deletar/' + id
     const response:Response = await fetch(apiUrl,{method:'DELETE'})
   
     if (response.status == 200) {
