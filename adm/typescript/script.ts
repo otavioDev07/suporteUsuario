@@ -25,25 +25,34 @@ async function listarChamadosGestao(email:string,login:boolean):Promise<void> {
 
   async function enviarChamadoAdm(event:any):Promise<boolean> {
     event.preventDefault()//método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
-
-    const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
-    const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
-      method: 'POST',
-      body: formData
-    }) 
-    
-    if (response.status == 201) {
-      alert('Chamado registrado com sucesso!')
-      window.location.reload()
-      return true
-    } else if (response.status == 409) {
-      alert('Chamado já tem registro!')
-      return false
-    } else {
-      alert('Falha ao registrar! Fale com o suporte')
-      return false
+    const user:any = document.getElementById("user")
+    const email:any = document.getElementById("email")
+    const telefone:any = document.getElementById("telefone")
+    const setor:any = document.getElementById("setor")
+    const problema:any = document.getElementById("problema")
+    const detalhes:any = document.getElementById("detalhes")
+    if (user.value.trim() == "" || email.value.trim() == "" || telefone.value.trim() == ""|| setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == ""){
+      alert("Não deixe campos em branco!")
+    } else{
+      const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
+      const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
+        method: 'POST',
+        body: formData
+      }) 
+      
+      if (response.status == 201) {
+        alert('Chamado registrado com sucesso!')
+        window.location.reload()
+        return true
+      } else if (response.status == 409) {
+        alert('Chamado já tem registro!')
+        return false
+      } else {
+        alert('Falha ao registrar! Fale com o suporte')
+        return false
+      }
     }
-  }
+    }
   
   async function preencherHome(userEmail:string,logado:boolean):Promise<void> {
     try {

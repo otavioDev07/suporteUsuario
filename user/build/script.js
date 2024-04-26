@@ -54,9 +54,9 @@ function listarChamadosUser(email, login) {
                     listaChamados.innerHTML = "";
                     for (_i = 0, data_1 = data_2; _i < data_1.length; _i++) {
                         item = data_1[_i];
-                        listaChamados.innerHTML += "<div style=\"cursor: pointer\" class=\"card col-12 col-lg-3 mx-2\"><div class=\"card-body\"><h5 id=\"cardProblema\" class=\"card-title\">".concat(item.problema, "</h5><div class=\"d-flex justify-content-between\"><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.user, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.telefone, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.setor, "</h6><h6 class=\"card-subtitle mb-2 text-body-secondary\" style=\"font-size: 8px;\">").concat(item.dia, " - ").concat(item.hora, "</h6></div><p class=\"card-text\">").concat(item.detalhes, "</p></div></div>"); //adiciona card com informações do chamado 
+                        listaChamados.innerHTML += "<div style=\"cursor: pointer\" class=\"cartinha col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 m-3\"><div class=\"card text-center bg-light\"><div class=\"card-header fs-3 text-danger\">".concat(item.problema, "</div><div class=\"card-body\"><h5 class=\"card-title\"></h5><div class=\"d-flex justify-content-between\"><p class=\"card-subtitle mb-2 text-body-secondary\">").concat(item.user, "</p><p class=\"card-subtitle mb-2 text-body-secondary\">").concat(item.telefone, "</p></div><div class=\"d-flex justify-content-between\"><p class=\"card-subtitle mb-2 text-body-secondary\">").concat(item.setor, "</p><p class=\"card-subtitle mb-2 text-body-secondary\">").concat(item.dia, " - ").concat(item.hora, "</p></div></div></div></div>"); //adiciona card com informações do chamado 
                     }
-                    cards = document.querySelectorAll('.card');
+                    cards = document.querySelectorAll('.cartinha');
                     cards.forEach(function (card, index) {
                         card.addEventListener('click', function () {
                             var item = data_2[index];
@@ -71,7 +71,7 @@ function listarChamadosUser(email, login) {
 }
 function enviarChamado(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var user, email, telefone, apiUrl, Getresponse, data, username, userphone, formData, response;
+        var user, email, telefone, setor, problema, detalhes, apiUrl, Getresponse, data, username, userphone, formData, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -79,30 +79,37 @@ function enviarChamado(event) {
                     user = document.getElementById("user");
                     email = document.getElementById("email");
                     telefone = document.getElementById("telefone");
+                    setor = document.getElementById("setor");
+                    problema = document.getElementById("problema");
+                    detalhes = document.getElementById("detalhes");
+                    if (!(setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == "")) return [3 /*break*/, 1];
+                    alert("Não deixe campos em branco!");
+                    return [3 /*break*/, 7];
+                case 1:
                     apiUrl = 'http://127.0.0.1:80/' + email.value;
                     return [4 /*yield*/, fetch(apiUrl)];
-                case 1:
+                case 2:
                     Getresponse = _a.sent();
-                    if (!!Getresponse.ok) return [3 /*break*/, 2];
+                    if (!!Getresponse.ok) return [3 /*break*/, 3];
                     alert('Usuário não encontrado!');
                     window.location.href = "../../login.html";
-                    return [3 /*break*/, 4];
-                case 2: return [4 /*yield*/, Getresponse.json()];
-                case 3:
+                    return [3 /*break*/, 5];
+                case 3: return [4 /*yield*/, Getresponse.json()];
+                case 4:
                     data = _a.sent();
                     username = data.user;
                     userphone = data.telefone;
                     user.value = username;
                     telefone.value = userphone;
-                    _a.label = 4;
-                case 4:
+                    _a.label = 5;
+                case 5:
                     formData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
                     ;
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/novochamado', {
                             method: 'POST',
                             body: formData
                         })];
-                case 5:
+                case 6:
                     response = _a.sent();
                     if (response.status == 201) {
                         alert('Chamado registrado com sucesso!');
@@ -117,7 +124,8 @@ function enviarChamado(event) {
                         alert('Falha ao registrar! Fale com o suporte');
                         return [2 /*return*/, false];
                     }
-                    return [2 /*return*/];
+                    _a.label = 7;
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -291,18 +299,28 @@ function preencherEdicao(id, userEmail, logado) {
 // alterarDados(event): Esta função é chamada quando os dados de um usuário são alterados em um formulário de edição. Ela envia os dados atualizados para a API através de uma solicitação PUT para atualizar o usuário.
 function alterarChamado(event, id, userEmail, logado) {
     return __awaiter(this, void 0, void 0, function () {
-        var apiUrl, formData, response, urlEditar, urlEditar;
+        var user, email, telefone, setor, problema, detalhes, apiUrl, formData, response, urlEditar, urlEditar;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault();
+                    user = document.getElementById("user");
+                    email = document.getElementById("email");
+                    telefone = document.getElementById("telefone");
+                    setor = document.getElementById("setor");
+                    problema = document.getElementById("problema");
+                    detalhes = document.getElementById("detalhes");
+                    if (!(setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == "")) return [3 /*break*/, 1];
+                    alert("Não deixe campos em branco!");
+                    return [3 /*break*/, 3];
+                case 1:
                     apiUrl = 'http://127.0.0.1:80/editar/' + id;
                     formData = new FormData(document.getElementById('formulario'));
                     return [4 /*yield*/, fetch(apiUrl, {
                             method: 'PUT',
                             body: formData
                         })];
-                case 1:
+                case 2:
                     response = _a.sent();
                     if (response.status == 201) {
                         alert('Chamado alterado com sucesso!');
@@ -316,7 +334,8 @@ function alterarChamado(event, id, userEmail, logado) {
                         window.location.href = urlEditar;
                         return [2 /*return*/, false];
                     }
-                    return [2 /*return*/];
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     });

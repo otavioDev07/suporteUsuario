@@ -72,18 +72,28 @@ function listarChamadosGestao(email, login) {
 }
 function enviarChamadoAdm(event) {
     return __awaiter(this, void 0, void 0, function () {
-        var formData, response;
+        var user, email, telefone, setor, problema, detalhes, formData, response;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     event.preventDefault(); //método que bloqueia a ação padrão do formulário, que seria a de recarregar a página limpando os dados do formulário.
+                    user = document.getElementById("user");
+                    email = document.getElementById("email");
+                    telefone = document.getElementById("telefone");
+                    setor = document.getElementById("setor");
+                    problema = document.getElementById("problema");
+                    detalhes = document.getElementById("detalhes");
+                    if (!(user.value.trim() == "" || email.value.trim() == "" || telefone.value.trim() == "" || setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == "")) return [3 /*break*/, 1];
+                    alert("Não deixe campos em branco!");
+                    return [3 /*break*/, 3];
+                case 1:
                     formData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
                     ;
                     return [4 /*yield*/, fetch('http://127.0.0.1:80/novochamado', {
                             method: 'POST',
                             body: formData
                         })];
-                case 1:
+                case 2:
                     response = _a.sent();
                     if (response.status == 201) {
                         alert('Chamado registrado com sucesso!');
@@ -98,7 +108,8 @@ function enviarChamadoAdm(event) {
                         alert('Falha ao registrar! Fale com o suporte');
                         return [2 /*return*/, false];
                     }
-                    return [2 /*return*/];
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
             }
         });
     });

@@ -25,36 +25,43 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
     const user:any = document.getElementById("user")
     const email:any = document.getElementById("email")
     const telefone:any = document.getElementById("telefone")
-    const apiUrl:string = 'http://127.0.0.1:80/' + email.value
-    const Getresponse:Response = await fetch(apiUrl)
-    if (!Getresponse.ok) {
-      alert('Usuário não encontrado!')
-      window.location.href = "../../login.html"
-    }
-    else {
-      const data:any = await Getresponse.json()
-      const username:any = data.user
-      const userphone:any = data.telefone
-      user.value = username
-      telefone.value = userphone
-    }
-    
-    const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
-    const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
-      method: 'POST',
-      body: formData
-    })
-    
-    if (response.status == 201) {
-      alert('Chamado registrado com sucesso!')
-      window.location.reload()
-      return true
-    } else if (response.status == 409) {
-      alert('Chamado já tem registro!')
-      return false
-    } else {
-      alert('Falha ao registrar! Fale com o suporte')
-      return false
+    const setor:any = document.getElementById("setor")
+    const problema:any = document.getElementById("problema")
+    const detalhes:any = document.getElementById("detalhes")
+    if (setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == ""){
+      alert("Não deixe campos em branco!")
+    } else{
+      const apiUrl:string = 'http://127.0.0.1:80/' + email.value
+      const Getresponse:Response = await fetch(apiUrl)
+      if (!Getresponse.ok) {
+        alert('Usuário não encontrado!')
+        window.location.href = "../../login.html"
+      }
+      else {
+        const data:any = await Getresponse.json()
+        const username:any = data.user
+        const userphone:any = data.telefone
+        user.value = username
+        telefone.value = userphone
+      }
+      
+      const formData:FormData = new FormData(document.getElementById('formulario')) //cria um novo objeto FormData e preenche-o com os dados do formulário HTML
+      const response:Response = await fetch('http://127.0.0.1:80/novochamado', {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (response.status == 201) {
+        alert('Chamado registrado com sucesso!')
+        window.location.reload()
+        return true
+      } else if (response.status == 409) {
+        alert('Chamado já tem registro!')
+        return false
+      } else {
+        alert('Falha ao registrar! Fale com o suporte')
+        return false
+      }
     }
   }
 
@@ -197,24 +204,33 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   
   async function alterarChamado(event:any,id:string,userEmail:string,logado:string):Promise<boolean>{
     event.preventDefault() 
-  
-    const apiUrl:string = 'http://127.0.0.1:80/editar/' + id
-    const formData:FormData = new FormData(document.getElementById('formulario'))
-    const response:Response = await fetch(apiUrl, {
-      method: 'PUT',
-      body: formData
-    })
-  
-    if (response.status == 201) {
-      alert('Chamado alterado com sucesso!')
-      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
-      window.location.href = urlEditar
-      return true
-    } else {
-      alert('Falha ao alterar! Fale com o suporte')
-      const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
-      window.location.href = urlEditar
-      return false
+    const user:any = document.getElementById("user")
+    const email:any = document.getElementById("email")
+    const telefone:any = document.getElementById("telefone")
+    const setor:any = document.getElementById("setor")
+    const problema:any = document.getElementById("problema")
+    const detalhes:any = document.getElementById("detalhes")
+    if (setor.value.trim() == "" || problema.value.trim() == "" || detalhes.value.trim() == ""){
+      alert("Não deixe campos em branco!")
+    } else{
+        const apiUrl:string = 'http://127.0.0.1:80/editar/' + id
+        const formData:FormData = new FormData(document.getElementById('formulario'))
+        const response:Response = await fetch(apiUrl, {
+          method: 'PUT',
+          body: formData
+        })
+      
+        if (response.status == 201) {
+          alert('Chamado alterado com sucesso!')
+          const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+          window.location.href = urlEditar
+          return true
+        } else {
+          alert('Falha ao alterar! Fale com o suporte')
+          const urlEditar:string = `home.html?userEmail=${userEmail}&logado=${logado}`
+          window.location.href = urlEditar
+          return false
+        }
     }
   }
   
