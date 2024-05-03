@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Detalhes do chamado</title>
+    <script>
+
+        function obterNumeroDaURL() {
+            const urlParams = new URLSearchParams(window.location.search)
+            const id = urlParams.get('id')
+            const userEmail = urlParams.get('userEmail')
+            const logado = urlParams.get('logado')
+            const infos = {'id':id,'userEmail':userEmail,'logado':logado}
+            return infos
+        }
+        
+        window.onload = () => {
+            const infos = obterNumeroDaURL()
+            if (infos) {
+                if (infos["logado"] != "true"){
+                    window.location.href = "login.html"
+                } else{
+                    preencherDetalheGestao(infos['id'],infos["logado"])
+                }
+            } else {
+                alert('Parâmetro "Situação de login" não encontrado na URL.')
+            }
+        }
+    </script>
+</head>
+<body>
+    <body style="min-height: 100vh; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif">
+        <header class="text-center bg-secondary">
+            <h1 id="username" class="text-light"></h1>
+        </header>
+        <main class="flex-fill flex-column justify-content-center align-items-center container-fluid">
+            <div class="container border rounded">
+                <div id="buttons" class="d-flex flex-row justify-content-between m-3">
+                    <div class="d-flex flex-flow text-primary">
+                        <i id="backButton" style="cursor: pointer" class="bi bi-arrow-left"></i>
+                    </div>
+                    <div class="flex-row-reverse text-primary">
+                        <i id="pencilButton" style="cursor: pointer;" class="bi bi-pencil-square me-3"></i>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between m-3">
+                    <h1 id="problemaTxt" class="col-10 col-lg-8"></h1>
+                    <div class="d-flex align-items-center w-auto">
+                        <p style="cursor: pointer" class="rounded-circle text-light p-3" id="statusTxt"></p>
+                    </div>
+                </div>
+                <div class="row g-4 d-flex justify-content-between">
+                    <div class="col-12 col-lg-3 p-2"><h3 id="usuarioTxt"></h3></div>
+                    <div class="col-12 col-lg-3 p-2"><h3 id="telefoneTxt"></h3></div>
+                    <div class="col-12 col-lg-3 p-2"><h3 id="setorTxt"></h3></div>
+                    <div class="col-12 col-lg-3 p-2"><h3 id="diaTxt"></h3></div>
+                </div>
+                <section class="d-flex flex-column">
+                    <h1>Detalhes</h1>
+                    <p id="detalhesTxt"></p>
+                </section>
+                <section class="d-flex flex-column text-center">
+                    <div class="d-flex flex-row justify-content-center align-items-center">
+                        <h1 class="pe-3">Comentário</h1>
+                        <p id="diaRespostaTxt" class="ps-3 pt-3"></p>
+                    </div>
+                    <p id="repostaTxt"></p>
+                </section>
+            </div>
+        </main>
+        <footer></footer>
+
+    <script src="build/script.js"></script>
+    <script>
+        const infos = obterNumeroDaURL()
+        let pencilButton = document.getElementById("pencilButton")
+        pencilButton.addEventListener('click',() => {
+            const urlEditar = `gestaoResposta.html?id=${infos['id']}&userEmail=${infos['userEmail']}&logado=${infos['logado']}`
+            window.location.href = urlEditar //permite redirecionar o navegador para o URL fornecido
+        })
+        let backButton = document.getElementById('backButton')
+        backButton.addEventListener('click',() => {
+            const urlEditar = `gestao.html?userEmail=${infos['userEmail']}&logado=${infos['logado']}`
+            window.location.href = urlEditar
+        })
+        let statusTxt = document.getElementById("statusTxt")
+        statusTxt.addEventListener('click',() => {
+            alterarStatus(infos['id'])
+        })
+    </script>
+</body>
+</html>
