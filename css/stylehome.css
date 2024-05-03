@@ -5,13 +5,13 @@
     font-family: 'Poppins', sans-serif;
 }
 body{
-  background-color: #515cf7;
+  background-color: #8c52ff;
 }
 .container{
-  background-color: #515cf7;
+  background-color: #8c52ff;
 }
 .wrapper{
-    background: #515cf7;
+    background: #8c52ff;
     padding: 0 20px 0 20px;
 }
 .main{
@@ -87,7 +87,7 @@ i{
    color: #5d5076;
  }
  .input-field .input:focus, .input-field .input:valid{
-    border-bottom: 1px solid #3a38c0;
+    border-bottom: 1px solid #8c52ff;
  }
  .submit{
     border: none;
@@ -98,7 +98,7 @@ i{
     transition: .4s;
  }
  .submit:hover{
-    background: rgba(60, 88, 243, 0.937);
+    background: #8c52ff;
     color: #fff;
  }
 
@@ -111,6 +111,13 @@ span a{
 span a:hover{
     text-decoration: underline;
     color: #000;
+}
+
+.cartinha{
+    transition: all 0.5s;
+}
+.cartinha:hover{
+    transform: translateY(-3%)
 }
 
 @media only screen and (max-width: 768px){
@@ -132,7 +139,9 @@ span a:hover{
         font-size: 16px;
     }
     .row{
-        max-width:420px;
+        width: 100%;
+    }
+    .input-box{
         width: 100%;
     }
 }

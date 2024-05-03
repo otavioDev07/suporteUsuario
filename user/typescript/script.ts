@@ -1,6 +1,6 @@
 async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   const listaChamados:any = document.getElementById("listaChamados")
-  const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + email
+  const apiUrl:string = 'http://127.0.0.1:80/chamado/' + email
   const response:Response = await fetch(apiUrl)
   if (!response.ok) {
     listaChamados.innerHTML = "<h2 class='text-center'>Não há chamados cadastrados</h2>"
@@ -9,7 +9,16 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
     const data:any = await response.json()
     listaChamados.innerHTML = ""
     for (let item of data) {  
-      listaChamados.innerHTML += `<div style="cursor: pointer" class="cartinha col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 m-3"><div class="card text-center bg-light"><div class="card-header fs-3 text-danger">${item.problema}</div><div class="card-body"><h5 class="card-title"></h5><div class="d-flex justify-content-between"><p class="card-subtitle mb-2 text-body-secondary">${item.user}</p><p class="card-subtitle mb-2 text-body-secondary">${item.telefone}</p></div><div class="d-flex justify-content-between"><p class="card-subtitle mb-2 text-body-secondary">${item.setor}</p><p class="card-subtitle mb-2 text-body-secondary">${item.dia} - ${item.hora}</p></div></div></div></div>` //adiciona card com informações do chamado 
+      listaChamados.innerHTML += `<div style="cursor: pointer" class="cartinha col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 m-3"><div class="card text-center bg-light"><div id="${item.id}" class="card-header fs-3 text-danger">${item.problema}</div><div class="card-body"><h5 class="card-title"></h5><div class="d-flex justify-content-between"><p class="card-subtitle mb-2 text-body-secondary">${item.user}</p><p class="card-subtitle mb-2 text-body-secondary">${item.telefone}</p></div><div class="d-flex flex-column justify-content-between"><p class="card-subtitle mb-2 text-body-secondary col-12">${item.setor}</p><p class="card-subtitle mb-2 text-body-secondary col-12">${item.dia} - ${item.hora}</p></div></div></div></div>` //adiciona card com informações do chamado 
+      if (item.status == "Fechado"){
+         const cardTitle:any = document.getElementById(`${item.id}`)
+         cardTitle.classList.remove('text-danger')
+         cardTitle.classList.add('text-success')
+      } else {
+        const cardTitle:any = document.getElementById(`${item.id}`)
+         cardTitle.classList.remove('text-success')
+         cardTitle.classList.add('text-danger')
+      }
     }
     const cards = document.querySelectorAll('.cartinha')
       cards.forEach((card, index) => {
@@ -71,7 +80,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
         window.location.href = "../../login.html"
       } else{
         const username:any = document.getElementById("username")
-        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/' + userEmail
+        const apiUrl:string = 'http://127.0.0.1:80/' + userEmail
         const response:Response = await fetch(apiUrl)
     
         if (!response.ok) {
@@ -108,7 +117,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
         const detalhesTxt:any = document.getElementById('detalhesTxt')
         const diaRespostaTxt:any = document.getElementById('diaRespostaTxt')
         const respostaTxt:any = document.getElementById('repostaTxt')
-        const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
+        const apiUrl:string = 'http://127.0.0.1:80/chamadoid/' + id
         const response:Response = await fetch(apiUrl)
         if (!response.ok) {
           alert('Chamado não encontrado!')
@@ -175,7 +184,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   
   async function preencherEdicao(id:string,userEmail:string,logado:boolean):Promise<void> {
     try {
-      const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/chamadoid/' + id
+      const apiUrl:string = 'http://127.0.0.1/chamadoid/' + id
       const response:Response = await fetch(apiUrl)
   
       if (!response.ok) {
@@ -228,7 +237,7 @@ async function listarChamadosUser(email:string,login:boolean):Promise<void> {
   // excluir(id): Esta função é chamada quando um usuário é excluído. Ela envia uma solicitação à API para excluir o usuário com o ID fornecido.
   
   async function excluir(id:string, userEmail:string,logado:boolean):Promise<boolean>{
-    const apiUrl:string = 'https://a38e4b81-b74c-4406-8b37-931c4d31e33c-00-l2kdebn1d3nc.janeway.replit.dev/deletar/' + id
+    const apiUrl:string = 'http://127.0.0.1:80/deletar/' + id
     const response:Response = await fetch(apiUrl,{method:'DELETE'})
   
     if (response.status == 200) {
